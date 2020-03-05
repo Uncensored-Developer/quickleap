@@ -23,4 +23,8 @@ module.exports = {
   },
 
   databaseUrl: process.env.DATABASE_URL,
+
+  mongoUrl: process.env.MONGODB_URI,
+
+  jwtSecret: process.env.JWT_SECRET,
 };
