@@ -6,6 +6,7 @@ async function startServer() {
 
   const app = express();
 
+
   await require('./loaders')({expressApp: app});
 
   app.listen(config.port, err => {

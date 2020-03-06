@@ -1,17 +1,21 @@
 const crypto = require('crypto');
-const argon2 = require('argon2');
+// const argon2 = require('argon2');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const uid = require('rand-token').uid;
 const events = require('../subscribers/events');
+const userService = require('../services/user');
+
 
 
 module.exports = class AuthService {
 
-  constructor(userService, smser, logger, eventDispatcher) {
-    this.userService = userService;
-    this.smser = smser;
-    this.logger = logger;
-    this.eventDispatcher = eventDispatcher;
+  constructor(container) {
+    this.userService = container.get(userService);
+    // this.smser = container.get('smser');
+    this.logger = container.get('logger');
+    // this.eventDispatcher = container.get('eventDispatcher');
   }
 
   async signUp(userInput) {
@@ -19,11 +23,19 @@ module.exports = class AuthService {
       const salt = crypto.randomBytes(32);
 
       this.logger.silly('Hashing password');
-      const hashedPassword = await argon2.hash(userInput.password, { salt });
+
+      const hashedPassword = await bcrypt.hash(userInput.password, 8);
 
       this.logger.silly('Creating user db record');
       const userRecord =  await this.userService.createUser(
-        Object.assign({}, userInput, { salt: salt.toString('hex'), password: hashedPassword }),
+        Object.assign(
+          {},
+          userInput,
+          {
+            salt: salt.toString('hex'),
+            password: hashedPassword,
+            referral_code: uid(10)
+          }),
       );
 
       this.logger.silly('Generating JWT');
@@ -32,14 +44,18 @@ module.exports = class AuthService {
         throw new Error('User cannot be created');
       }
 
-      this.logger.silly('Sending validation code sms');
-      await this.smser.sendValidationCode(userRecord);
-      this.eventDispatcher.dispatch(events.user.signUp, { user: userRecord });
+      // this.logger.silly('Sending validation code sms');
+      // await this.smser.sendValidationCode(userRecord);
+      // this.eventDispatcher.dispatch(events.user.signUp, { user: userRecord });
 
+      const user = {
+        id: userRecord.id,
+        username: userRecord.username,
+        account_type: userRecord.account_type,
+        referral_code: userRecord.referral_code,
+        name: userRecord.name
+      };
 
-      const user = userRecord.toObject();
-      Reflect.deleteProperty(user, 'password');
-      Reflect.deleteProperty(user, 'salt');
       return { user, token };
     } catch (e) {
       this.logger.error(e);
@@ -56,7 +72,7 @@ module.exports = class AuthService {
     return jwt.sign(
       {
         id: user.id,
-        account_type: user.roaccount_typele,
+        account_type: user.account_type,
         name: user.name,
         username: user.username,
         exp: exp.getTime() / 1000,

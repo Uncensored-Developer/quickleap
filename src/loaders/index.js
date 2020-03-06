@@ -1,10 +1,19 @@
 const expressLoader = require('./express');
 const loggerLoader = require('./logger');
+const mongooseLoader = require('./mongoose');
+const DILoader = require('./dependencyInjector');
 
 
 module.exports = async ({expressApp}) => {
   // LOAD AND CONNECT DB
-  loggerLoader.info('DB loaded and connected');
+  const mongoConn = await mongooseLoader();
+  loggerLoader.info('MONGODB loaded and connected');
+
+
+
+  await DILoader(mongoConn);
+
+  loggerLoader.info('Dependency Injector loaded');
 
   await expressLoader({app: expressApp});
 
