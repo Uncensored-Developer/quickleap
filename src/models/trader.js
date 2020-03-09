@@ -2,7 +2,7 @@
 
 
 module.exports = (sequelize, DataTypes) => {
-  const Farmer = sequelize.define('Farmer', {
+  const Trader = sequelize.define('Trader', {
     classification: {
       type: DataTypes.STRING(20),
       allowNull: true,
@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    yield_per_hectare: {
-      type: DataTypes.INTEGER,
+    price_details: {
+      type: DataTypes.STRING,
       allowNull: true
     },
-    quality_control: {
-      type: DataTypes.STRING(20),
+    quality: {
+      type: DataTypes.STRING(50),
       allowNull: true
     },
   }, {});
-  Farmer.associate = function(models) {
+  Trader.associate = function(models) {
     // associations can be defined here
   };
-  return Farmer;
+  return Trader;
 };
