@@ -16,14 +16,26 @@ module.exports = class AuthController{
     const user = await AuthController.userService.getUser(req.body.username);
     if (!user) {
       const result = await AuthController.authService.signUp(req.body);
-      const msg = 'User Registered';
+      const msg = 'User Registered.';
       util.setSuccess(201, msg, result);
-      util.send(res);
     } else {
       const msg = 'A user with this phone number already exists.';
       util.setError(400, msg);
-      return util.send(res);
+
     }
+    return util.send(res);
+  }
+
+  static async login(req, res) {
+    const result = await AuthController.authService.signIn(req.body);
+    if (result == null || result === 'invalid_password') {
+      const msg = 'Invalid login details.';
+      util.setError(400, msg);
+    } else {
+      const msg = 'Login Successful';
+      util.setSuccess(200, msg, result);
+    }
+    return util.send(res);
   }
 
 };

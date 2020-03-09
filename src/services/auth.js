@@ -4,10 +4,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 const uid = require('rand-token').uid;
+const typedi = require('typedi');
 const events = require('../subscribers/events');
 const userService = require('../services/user');
+const loggerLoader = require('../loaders/logger');
 
 
+// typedi.Container.set('logger', loggerLoader);
 
 module.exports = class AuthService {
 
@@ -61,6 +64,36 @@ module.exports = class AuthService {
       this.logger.error(e);
       throw e;
     }
+  }
+
+  async signIn(userInput) {
+
+    try {
+      const userRecord = await this.userService.getUser(userInput.username);
+      if (!userRecord) { return null;}
+
+      const passwordIsValid = await bcrypt.compare(userInput.password, userRecord.password);
+      if (!passwordIsValid) { return 'invalid_password'}
+
+      this.logger.silly('Valid Password');
+
+      this.logger.silly('Generating JWT');
+      const token = this.generateToken(userRecord);
+
+      const user = {
+        id: userRecord.id,
+        username: userRecord.username,
+        account_type: userRecord.account_type,
+        referral_code: userRecord.referral_code,
+        name: userRecord.name
+      };
+
+      return { user, token };
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+
   }
 
   generateToken(user) {

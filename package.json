@@ -7,9 +7,10 @@
     "dev": "nodemon",
     "start": "NODE_ENV=production node src/app.js",
     "inspect": "nodemon --inspect src/app.js",
-    "migrate_db": "node src/migrate.js",
+    "migrate_db": "export NODE_ENV=development && node src/migrate.js",
+    "drop_tables": "node src/drop_tables.js",
     "check": "node src/check.js",
-    "test": "mocha src/tests/**/**/*.js --timeout 20000 --exit"
+    "test": "export NODE_ENV=test && npm run drop_tables && npm run migrate_db && mocha src/tests/**/**/*.js --timeout 20000 --exit"
   },
   "dependencies": {
     "agenda": "^3.0.0",

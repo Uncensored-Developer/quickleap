@@ -20,6 +20,6 @@ describe('User service unit tests', () => {
 
       expect(userRecord).to.have.property('id');
     });
-  })
+  });
 
 });
