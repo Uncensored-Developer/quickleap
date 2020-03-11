@@ -1,4 +1,5 @@
 const typedi = require('typedi');
+const EventEmitter = require('events');
 const logger = require('./logger');
 const agendaLoader = require('./agenda');
 const userService = require('../services/user');
@@ -18,6 +19,7 @@ module.exports = (mongoConnection) => {
     typedi.Container.set('agendaInstance', agendaInstance);
     typedi.Container.set('userService', userService);
     typedi.Container.set('authService', authService);
+    typedi.Container.set('EventEmitter', EventEmitter);
     typedi.Container.set('util', util);
     //   'smsClient',
     //   mailgun_js_1.default({ apiKey: config_1.default.emails.apiKey, domain: config_1.default.emails.domain }),

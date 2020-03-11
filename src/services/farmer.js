@@ -23,7 +23,8 @@ module.exports = class FarmerService {
 
   async updateFarmer(id, farmer) {
     try {
-      return db.Farmer.update(farmer, {where: {id: id}});
+      await db.Farmer.update(farmer, {where: {id: id}});
+      return farmer
     } catch (e) {
       throw e;
     }

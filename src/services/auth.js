@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-// const argon2 = require('argon2');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
@@ -7,10 +6,8 @@ const uid = require('rand-token').uid;
 const typedi = require('typedi');
 const events = require('../subscribers/events');
 const userService = require('../services/user');
-const loggerLoader = require('../loaders/logger');
+const farmerService = require('../services/farmer');
 
-
-// typedi.Container.set('logger', loggerLoader);
 
 module.exports = class AuthService {
 
@@ -18,7 +15,7 @@ module.exports = class AuthService {
     this.userService = container.get(userService);
     // this.smser = container.get('smser');
     this.logger = container.get('logger');
-    // this.eventDispatcher = container.get('eventDispatcher');
+    this.eventEmitter = require('../subscribers/emitter').getInstance();
   }
 
   async signUp(userInput) {
@@ -49,7 +46,7 @@ module.exports = class AuthService {
 
       // this.logger.silly('Sending validation code sms');
       // await this.smser.sendValidationCode(userRecord);
-      // this.eventDispatcher.dispatch(events.user.signUp, { user: userRecord });
+      this.eventEmitter.emit(events.user.signUp, userRecord);
 
       const user = {
         id: userRecord.id,
@@ -94,6 +91,17 @@ module.exports = class AuthService {
       throw e;
     }
 
+  }
+
+
+  getServiceInstance(account_type) {
+    switch (account_type) {
+      case 'farmer':
+        return typedi.Container.get(farmerService);
+        break;
+      default:
+        return null;
+    }
   }
 
   generateToken(user) {
