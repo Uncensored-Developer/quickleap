@@ -44,6 +44,9 @@ module.exports = class AuthService {
         throw new Error('User cannot be created');
       }
 
+      const accountTypeRecord = await this.createAccountTypeRecord(
+        userRecord.account_type, {userId: userRecord.id});
+
       // this.logger.silly('Sending validation code sms');
       // await this.smser.sendValidationCode(userRecord);
       this.eventEmitter.emit(events.user.signUp, userRecord);
@@ -53,7 +56,8 @@ module.exports = class AuthService {
         username: userRecord.username,
         account_type: userRecord.account_type,
         referral_code: userRecord.referral_code,
-        name: userRecord.name
+        name: userRecord.name,
+        account_type_id: accountTypeRecord.id
       };
 
       return { user, token };
@@ -94,10 +98,10 @@ module.exports = class AuthService {
   }
 
 
-  getServiceInstance(account_type) {
+  async createAccountTypeRecord(account_type, data) {
     switch (account_type) {
       case 'farmer':
-        return typedi.Container.get(farmerService);
+        return await typedi.Container.get(farmerService).createFarmer(data);
         break;
       default:
         return null;
