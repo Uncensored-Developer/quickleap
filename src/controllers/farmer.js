@@ -39,8 +39,13 @@ module.exports = class FarmerController{
   }
 
   static async fetch(req, res) {
-    const farmers = await FarmerController.farmerService.fetchFarmers(req.body);
-
+    const params = {
+        limit: req.query.limit || 10,
+        offset: req.query.offset || undefined,
+        order_by: req.query.order_by || 'id',
+        sort: req.query.sort || 'ASC'
+    };
+    const farmers = await FarmerController.farmerService.fetchFarmers(params);
     if (farmers.length > 0) {
         const msg = 'Farmers retrieved.';
         util.setSuccess(200, msg, farmers)

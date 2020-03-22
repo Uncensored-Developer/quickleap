@@ -25,9 +25,17 @@ module.exports = class FarmerService {
     }
   }
 
-  async fetchFarmers({limit, offset, soft_field, sort}) {
+  async fetchFarmers({limit, offset, order_by, sort}) {
     try {
-      return await db.Farmer.findAll({limit: limit, offset: offset, order: [soft_field, sort || 'ASC']});
+      return await db.Farmer.findAll(
+          {
+            offset: offset, limit: limit,
+            order: [
+                [order_by, sort.toUpperCase()],
+                // [{model: 'Farmer', as: 'Farmer'}, 'id', sort || 'ASC']
+            ]
+          }
+          );
     } catch (e) {
       throw e;
     }

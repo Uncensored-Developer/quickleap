@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e9d77340-de00-4e22-86d7-6a89e8afe528" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/quickleap.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/quickleap.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/routes/farmer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/routes/farmer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/farmer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/farmer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/farmer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/farmer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/user.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +75,7 @@
       <workItem from="1583759685177" duration="29188000" />
       <workItem from="1584786959927" duration="187000" />
       <workItem from="1584787164201" duration="592000" />
-      <workItem from="1584795519034" duration="14432000" />
+      <workItem from="1584795519034" duration="18006000" />
     </task>
     <servers />
   </component>

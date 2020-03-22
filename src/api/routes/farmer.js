@@ -25,19 +25,9 @@ module.exports = app => {
     eah(farmerController.update)
   );
 
-  router.get(
-    '/:id',
-    middlewares.isAuth,
-    // celebrate.celebrate({
-    //   body: celebrate.Joi.object({
-    //     classification: celebrate.Joi.string().valid('grain', 'tuber', 'fiber', 'legume').required(),
-    //     focus_area: celebrate.Joi.number().required(),
-    //     yield_per_hectare: celebrate.Joi.number().required(),
-    //     quality_control: celebrate.Joi.string().valid('grade1', 'grade2').required(),
-    //   }),
-    // }),
-    eah(farmerController.get)
-  );
+  router.get('/:id', eah(farmerController.get));
+
+  router.get('', eah(farmerController.fetch));
 
 
 
