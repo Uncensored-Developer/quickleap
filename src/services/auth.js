@@ -102,7 +102,7 @@ module.exports = class AuthService {
     console.log(data)
     switch (account_type) {
       case 'farmer':
-        return await typedi.Container.get(farmerService).createFarmer(data);
+        return await typedi.Container.get(farmerService).create(data);
         break;
       default:
         return null;

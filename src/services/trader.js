@@ -2,14 +2,14 @@ const db = require('../models');
 const BaseService = require('./base');
 
 
-module.exports = class FarmerService {
+module.exports = class TraderService {
 
   constructor(container) {
-    this.service = new BaseService(db.Farmer);
+    this.service = new BaseService(db.Trader);
   }
 
-  async create(farmer) {
-    return this.service.create(farmer);
+  async create(trader) {
+    return this.service.create(trader);
   }
 
   async get(id) {
@@ -20,8 +20,8 @@ module.exports = class FarmerService {
     return this.service.fetch({limit, offset, order_by, sort, fields});
   }
 
-  async update(id, farmer) {
-    return this.service.update(id, farmer)
+  async update(id, trader) {
+    return this.service.update(id, trader)
   }
 
   async delete(id) {

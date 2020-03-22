@@ -12,7 +12,7 @@ describe('Farmer service unit tests', () => {
         userId: 1
       };
 
-      const farmerRecord = await farmerServiceInstance.createFarmer(userInput);
+      const farmerRecord = await farmerServiceInstance.create(userInput);
 
       expect(farmerRecord).to.have.property('id');
     });
@@ -22,7 +22,7 @@ describe('Farmer service unit tests', () => {
     it('should return farmer record with the passed id', async () => {
       const id = 1;
 
-      const farmerRecord = await farmerServiceInstance.getFarmer(id);
+      const farmerRecord = await farmerServiceInstance.get(id);
 
       expect(farmerRecord).to.have.property('id');
       expect(farmerRecord.id).to.equal(id);
@@ -38,8 +38,8 @@ describe('Farmer service unit tests', () => {
         yield_per_hectare: 678
       };
 
-      await farmerServiceInstance.updateFarmer(id, input);
-      const farmerRecord = await farmerServiceInstance.getFarmer(id);
+      await farmerServiceInstance.update(id, input);
+      const farmerRecord = await farmerServiceInstance.get(id);
 
       expect(farmerRecord).to.have.property('id');
       expect(farmerRecord.id).to.equal(id);
@@ -53,8 +53,8 @@ describe('Farmer service unit tests', () => {
     it('should delete the farmer with the passed id and return the deleted farmer id', async () => {
       const id = 1;
 
-      const farmerRecord1 = await farmerServiceInstance.deleteFarmer(id);
-      const farmerRecord = await farmerServiceInstance.getFarmer(id);
+      const farmerRecord1 = await farmerServiceInstance.delete(id);
+      const farmerRecord = await farmerServiceInstance.get(id);
 
       expect(farmerRecord1).to.equal(id);
       expect(farmerRecord).to.equal(null);
