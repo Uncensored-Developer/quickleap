@@ -16,9 +16,13 @@ module.exports = class UserService {
   }
 
   async getUser(username) {
-    return await db.User.findOne({
-      where: {username: username}
-    });
+    try {
+      return await db.User.findOne({
+        where: {username: username}
+      });
+    } catch (e) {
+      throw e;
+    }
   }
 
 };

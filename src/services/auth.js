@@ -45,7 +45,7 @@ module.exports = class AuthService {
       }
 
       const accountTypeRecord = await this.createAccountTypeRecord(
-        userRecord.account_type, {userId: userRecord.id});
+        userRecord.account_type, {UserId: userRecord.id});
 
       // this.logger.silly('Sending validation code sms');
       // await this.smser.sendValidationCode(userRecord);
@@ -99,6 +99,7 @@ module.exports = class AuthService {
 
 
   async createAccountTypeRecord(account_type, data) {
+    console.log(data)
     switch (account_type) {
       case 'farmer':
         return await typedi.Container.get(farmerService).createFarmer(data);

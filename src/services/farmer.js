@@ -16,9 +16,21 @@ module.exports = class FarmerService {
   }
 
   async getFarmer(id) {
-    return await db.Farmer.findOne({
-      where: {id: id}
-    });
+    try {
+      return await db.Farmer.findOne({
+        where: {id: id}
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async fetchFarmers({limit, offset, soft_field, sort}) {
+    try {
+      return await db.Farmer.findAll({limit: limit, offset: offset, order: [soft_field, sort || 'ASC']});
+    } catch (e) {
+      throw e;
+    }
   }
 
   async updateFarmer(id, farmer) {
