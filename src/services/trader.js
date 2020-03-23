@@ -28,4 +28,8 @@ module.exports = class TraderService {
     return this.service.delete(id);
   }
 
+  async get_attrs() {
+    return this.service.get_attributes();
+  }
+
 };

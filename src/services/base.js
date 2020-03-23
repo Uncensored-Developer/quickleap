@@ -56,4 +56,8 @@ module.exports = class BaseService {
           throw e;
         }
     }
+
+    async get_attributes() {
+        return Object.keys(this.model.rawAttributes);
+    }
 };

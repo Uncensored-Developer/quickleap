@@ -1,7 +1,5 @@
-const typedi = require('typedi');
 const Util = require('../utils/utils');
 const helpers = require('../utils/helpers');
-const farmerService = require('../services/farmer');
 
 
 const util = new Util();
@@ -45,7 +43,7 @@ module.exports = class BaseController {
   async fetch(req, res) {
     const params = helpers.getParams(req);
 
-    const allowed_filters = ['classification', 'focus_area', 'yield_per_hectare', 'quality_control'];
+    const allowed_filters = await this.service.get_attrs();
 
     helpers.checkForInvalidFilter(allowed_filters, params.fields, util, res);
 
