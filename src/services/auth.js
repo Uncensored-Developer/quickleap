@@ -7,6 +7,7 @@ const typedi = require('typedi');
 const events = require('../subscribers/events');
 const userService = require('../services/user');
 const farmerService = require('../services/farmer');
+const traderService = require('../services/trader');
 
 
 module.exports = class AuthService {
@@ -103,6 +104,9 @@ module.exports = class AuthService {
     switch (account_type) {
       case 'farmer':
         return await typedi.Container.get(farmerService).create(data);
+        break;
+      case 'trader':
+        return await typedi.Container.get(traderService).create(data);
         break;
       default:
         return null;

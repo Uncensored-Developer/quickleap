@@ -7,6 +7,7 @@ const BaseController = require('./base');
 module.exports = class FarmerController{
 
   static get farmerService() { return typedi.Container.get(farmerService); }
+  
   static get baseController() {
       return new BaseController(FarmerController.farmerService, 'Farmer');
   }
