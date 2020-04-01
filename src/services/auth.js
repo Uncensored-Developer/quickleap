@@ -8,6 +8,8 @@ const events = require('../subscribers/events');
 const userService = require('../services/user');
 const farmerService = require('../services/farmer');
 const traderService = require('../services/trader');
+const truckerService = require('../services/trucker');
+const warehouseService = require('../services/warehouse');
 
 
 module.exports = class AuthService {
@@ -100,13 +102,18 @@ module.exports = class AuthService {
 
 
   async createAccountTypeRecord(account_type, data) {
-    console.log(data)
     switch (account_type) {
       case 'farmer':
         return await typedi.Container.get(farmerService).create(data);
         break;
       case 'trader':
         return await typedi.Container.get(traderService).create(data);
+        break;
+      case 'trucker':
+        return await typedi.Container.get(truckerService).create(data);
+        break;
+      case 'warehouse':
+        return await typedi.Container.get(warehouseService).create(data);
         break;
       default:
         return null;

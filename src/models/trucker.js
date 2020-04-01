@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     route_info: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.TEXT,
       allowNull: true
     },
     tracker_ability: {
