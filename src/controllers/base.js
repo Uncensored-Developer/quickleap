@@ -7,13 +7,15 @@ const util = new Util();
 
 module.exports = class BaseController {
 
-  constructor(service, noun) {
+  constructor(service, noun, image_service) {
       this.service = service;
       this.noun = noun;
+      this.image_service = image_service;
   }
 
   async update(req, res) {
     const {id} = req.params;
+    const images = req.body.images;
 
     if (!Number(id)) {
         const msg = 'Please input a valid numeric id.';
@@ -32,7 +34,31 @@ module.exports = class BaseController {
             util.setError(403, msg);
             return util.send(res);
         }
+
+        delete req.body.images;
+
         const updatedObj = await this.service.update(id, req.body);
+        if (this.image_service) {
+            // save attached images
+            let img_arr = []
+            for (const img of images) {
+                img_arr.push({TruckerId: id, image: img})
+            }
+            const saved_images = await this.image_service.create(img_arr);
+            console.log(saved_images)
+            if (saved_images.length == 0) {
+                const msg = `Images not saved.`;
+                util.setError(400, msg);
+                return util.send(res);
+            }
+            img_arr = []
+            for (const img of saved_images) {
+                img_arr.push({id: img.id, image: img.image})
+            }
+
+            updatedObj.images = img_arr
+            
+        }
         const msg = `${this.noun} updated.`;
         util.setSuccess(200, msg, updatedObj);
     }

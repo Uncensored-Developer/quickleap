@@ -19,6 +19,7 @@ module.exports = app => {
                 route_info: celebrate.Joi.string().required(),
                 tracker_ability: celebrate.Joi.boolean().required(),
                 details: celebrate.Joi.string().required(),
+                images: celebrate.Joi.array().max(3)
             }),
         }),
         eah(truckerController.update)

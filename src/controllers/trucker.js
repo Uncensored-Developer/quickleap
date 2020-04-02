@@ -1,15 +1,21 @@
 const typedi = require('typedi');
 const Util = require('../utils/utils');
 const truckerService = require('../services/trucker');
+const truckerImageService = require('../services/truckerimage');
 const BaseController = require('./base');
 
 
 module.exports = class TruckerController {
 
     static get truckerService() { return typedi.Container.get(truckerService); }
+    static get truckerImageService() { return typedi.Container.get(truckerImageService); }
 
     static get baseController() {
-        return new BaseController(TruckerController.truckerService, 'Trucker');
+        return new BaseController(
+            TruckerController.truckerService, 
+            'Trucker',
+            TruckerController.truckerImageService
+            );
     }
 
     static async update(req, res) {
