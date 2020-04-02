@@ -12,6 +12,14 @@ module.exports = class BaseService {
         }
     }
 
+    async bulkCreate(data_list) {
+        try {
+          return await this.model.bulkCreate(data_list);
+        } catch (e) {
+          throw e;
+        }
+    }
+
     async get(id) {
         try {
           return await this.model.findOne({
