@@ -8,6 +8,7 @@
     "start": "node src/app.js",
     "inspect": "nodemon --inspect src/app.js",
     "migrate_db": "export NODE_ENV=development && node src/migrate.js",
+    "migrate_prod_db": "node src/migrate.js",
     "migrate_test_db": "node src/migrate.js",
     "drop_tables": "node src/drop_tables.js",
     "check": "node src/check.js",
