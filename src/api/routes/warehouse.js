@@ -21,9 +21,10 @@ module.exports = app => {
                 focus_area: celebrate.Joi.number().required(),
                 price_details: celebrate.Joi.string().required(),
                 location: celebrate.Joi.string().required(),
+                images: celebrate.Joi.array().max(3)
             }),
         }),
-        eah(warehouseController.update)
+        warehouseController.update
     );
 
     router.get('/:id', eah(warehouseController.get));

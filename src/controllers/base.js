@@ -22,7 +22,7 @@ module.exports = class BaseController {
         util.setError(400, msg);
         return util.send(res);
     }
-
+    console.log(this.image_service)
     const obj = await this.service.get(id);
 
     if (!obj) {
@@ -42,10 +42,10 @@ module.exports = class BaseController {
             // save attached images
             let img_arr = []
             for (const img of images) {
-                img_arr.push({TruckerId: id, image: img})
+                const key = `${this.noun}Id`;
+                img_arr.push({[key]: id, image: img})
             }
             const saved_images = await this.image_service.create(img_arr);
-            console.log(saved_images)
             if (saved_images.length == 0) {
                 const msg = `Images not saved.`;
                 util.setError(400, msg);

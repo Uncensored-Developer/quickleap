@@ -1,15 +1,21 @@
 const typedi = require('typedi');
 const Util = require('../utils/utils');
 const warehouseService = require('../services/warehouse');
+const warehouseImageService = require('../services/warehouseimage');
 const BaseController = require('./base');
 
 
 module.exports = class WarehouseController {
 
-    static get truckerService() { return typedi.Container.get(warehouseService); }
+    static get warehouseService() { return typedi.Container.get(warehouseService); }
+    static get warehouseImageService() { return typedi.Container.get(warehouseImageService); }
 
     static get baseController() {
-        return new BaseController(WarehouseController.truckerService, 'Warehouse');
+        return new BaseController(
+            WarehouseController.warehouseService, 
+            'Warehouse',
+            WarehouseController.warehouseImageService
+            );
     }
 
     static async update(req, res) {
