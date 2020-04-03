@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger       = require('morgan');
 const api          = require('../api');
 const config       = require('../config');
+const cors         = require('cors');
 
 
 module.exports = ({app}) => {
@@ -13,6 +14,23 @@ module.exports = ({app}) => {
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, 'public')));
+
+
+  /**
+   * Health Check endpoints
+   */
+  app.get('/status', (req, res) => {
+    res.status(200).end();
+  });
+  app.head('/status', (req, res) => {
+    res.status(200).end();
+  });
+
+  
+  app.enable('trust proxy');
+
+  // Enable Cross Origin Resource Sharing to all origins by default
+  app.use(cors());
 
 
   // Load API routes
