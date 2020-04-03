@@ -99,6 +99,17 @@ module.exports = class BaseController {
           const msg = `${this.noun} not found.`;
           util.setError(404, msg);
       } else {
+          if (this.image_service) {
+            //   fetch and attach related images to results
+            const images = await this.image_service.fetch(id);
+            let img_arr = []
+            for (const img of images) {
+                img_arr.push({ id: img.id, image: img.image })
+            }
+            
+            farmer.dataValues.images = img_arr;
+          }
+
           const msg = `${this.noun} found.`;
           util.setSuccess(200, msg, farmer)
       }

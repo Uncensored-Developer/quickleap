@@ -24,7 +24,7 @@ module.exports = app => {
                 images: celebrate.Joi.array().max(3)
             }),
         }),
-        warehouseController.update
+        eah(warehouseController.update)
     );
 
     router.get('/:id', eah(warehouseController.get));
