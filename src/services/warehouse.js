@@ -12,8 +12,8 @@ module.exports = class WarehouseService {
         return this.service.create(warehouse);
     }
 
-    async get(id) {
-        return this.service.get(id);
+    async get(query) {
+        return this.service.get(query);
     }
 
     async fetch({ limit, offset, order_by, sort, fields }) {

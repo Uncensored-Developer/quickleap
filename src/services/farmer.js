@@ -12,8 +12,8 @@ module.exports = class FarmerService {
     return this.service.create(farmer);
   }
 
-  async get(id) {
-    return this.service.get(id);
+  async get(query) {
+    return this.service.get(query);
   }
 
   async fetch({limit, offset, order_by, sort, fields}) {

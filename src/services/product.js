@@ -2,14 +2,14 @@ const db = require('../models');
 const BaseService = require('./base');
 
 
-module.exports = class TruckerService {
+module.exports = class ProductService {
 
     constructor(container) {
-        this.service = new BaseService(db.Trucker);
+        this.service = new BaseService(db.Product);
     }
 
-    async create(trucker) {
-        return this.service.create(trucker);
+    async create(product) {
+        return this.service.create(product);
     }
 
     async get(query) {
@@ -20,8 +20,8 @@ module.exports = class TruckerService {
         return this.service.fetch({ limit, offset, order_by, sort, fields });
     }
 
-    async update(id, trucker) {
-        return this.service.update(id, trucker)
+    async update(id, product) {
+        return this.service.update(id, product)
     }
 
     async delete(id) {

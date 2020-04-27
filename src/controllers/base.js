@@ -22,8 +22,7 @@ module.exports = class BaseController {
         util.setError(400, msg);
         return util.send(res);
     }
-    console.log(this.image_service)
-    const obj = await this.service.get(id);
+    const obj = await this.service.get({id: id});
 
     if (!obj) {
         const msg = `${this.noun} not found.`;
@@ -94,7 +93,7 @@ module.exports = class BaseController {
           return util.send(res);
       }
 
-      const farmer = await this.service.get(id);
+      const farmer = await this.service.get({id: id});
       if (!farmer) {
           const msg = `${this.noun} not found.`;
           util.setError(404, msg);

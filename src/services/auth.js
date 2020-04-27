@@ -37,7 +37,7 @@ module.exports = class AuthService {
           {
             salt: salt.toString('hex'),
             password: hashedPassword,
-            referral_code: uid(10)
+            referral_code: uid(10).toUpperCase()
           }),
       );
 
@@ -47,8 +47,9 @@ module.exports = class AuthService {
         throw new Error('User cannot be created');
       }
 
-      const accountTypeRecord = await this.createAccountTypeRecord(
-        userRecord.account_type, {UserId: userRecord.id});
+      const accountService = this.getAccountTypeService(userRecord.account_type);
+
+      const accountTypeRecord = await accountService.create({UserId: userRecord.id});
 
       // this.logger.silly('Sending validation code sms');
       // await this.smser.sendValidationCode(userRecord);
@@ -84,11 +85,17 @@ module.exports = class AuthService {
       this.logger.silly('Generating JWT');
       const token = this.generateToken(userRecord);
 
+      const accountService = this.getAccountTypeService(userRecord.account_type);
+
+      // get account type details
+      const accountTypeRecord = await accountService.get({ UserId: userRecord.id });
+
       const user = {
         id: userRecord.id,
         username: userRecord.username,
         account_type: userRecord.account_type,
         referral_code: userRecord.referral_code,
+        account_type_id: accountTypeRecord.id,
         name: userRecord.name
       };
 
@@ -101,19 +108,19 @@ module.exports = class AuthService {
   }
 
 
-  async createAccountTypeRecord(account_type, data) {
+  getAccountTypeService(account_type) {
     switch (account_type) {
       case 'farmer':
-        return await typedi.Container.get(farmerService).create(data);
+        return typedi.Container.get(farmerService);
         break;
       case 'trader':
-        return await typedi.Container.get(traderService).create(data);
+        return typedi.Container.get(traderService);
         break;
       case 'trucker':
-        return await typedi.Container.get(truckerService).create(data);
+        return typedi.Container.get(truckerService);
         break;
       case 'warehouse':
-        return await typedi.Container.get(warehouseService).create(data);
+        return typedi.Container.get(warehouseService);
         break;
       default:
         return null;

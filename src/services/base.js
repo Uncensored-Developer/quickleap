@@ -20,10 +20,10 @@ module.exports = class BaseService {
         }
     }
 
-    async get(id) {
+    async get(query) {
         try {
           return await this.model.findOne({
-            where: {id: id}
+            where: query
           });
         } catch (e) {
           throw e;
