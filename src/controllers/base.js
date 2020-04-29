@@ -13,6 +13,7 @@ module.exports = class BaseController {
       this.image_service = image_service;
   }
 
+
   async update(req, res) {
     const {id} = req.params;
     const images = req.body.images;
@@ -28,7 +29,7 @@ module.exports = class BaseController {
         const msg = `${this.noun} not found.`;
         util.setError(404, msg);
     } else {
-        if (obj.UserId !== req.token.id) {
+        if (obj.UserId !== req.user.id) {
             const msg = `You are not permitted to update this ${this.noun}.`;
             util.setError(403, msg);
             return util.send(res);

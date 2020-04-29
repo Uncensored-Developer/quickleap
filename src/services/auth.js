@@ -49,7 +49,12 @@ module.exports = class AuthService {
 
       const accountService = this.getAccountTypeService(userRecord.account_type);
 
-      const accountTypeRecord = await accountService.create({UserId: userRecord.id});
+      let accountTypeRecordId = null
+
+      if (userRecord.account_type !== 'aggregator') {
+        const accountTypeRecord = await accountService.create({ UserId: userRecord.id });
+        accountTypeRecordId = accountTypeRecord.id
+      }
 
       // this.logger.silly('Sending validation code sms');
       // await this.smser.sendValidationCode(userRecord);
@@ -61,7 +66,7 @@ module.exports = class AuthService {
         account_type: userRecord.account_type,
         referral_code: userRecord.referral_code,
         name: userRecord.name,
-        account_type_id: accountTypeRecord.id
+        account_type_id: accountTypeRecordId
       };
 
       return { user, token };
