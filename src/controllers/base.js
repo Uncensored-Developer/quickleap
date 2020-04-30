@@ -66,13 +66,14 @@ module.exports = class BaseController {
     return util.send(res);
   }
 
-  async fetch(req, res) {
+  async fetch(req, res, exclude) {
     const params = helpers.getParams(req);
 
     const allowed_filters = await this.service.get_attrs();
 
     helpers.checkForInvalidFilter(allowed_filters, params.fields, util, res);
 
+    params.exclude = exclude;
     const farmers = await this.service.fetch(params);
 
     if (farmers.length > 0) {

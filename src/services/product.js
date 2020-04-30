@@ -16,8 +16,8 @@ module.exports = class ProductService {
         return this.service.get(query);
     }
 
-    async fetch({ limit, offset, order_by, sort, fields }) {
-        return this.service.fetch({ limit, offset, order_by, sort, fields });
+    async fetch({ limit, offset, order_by, sort, fields, exclude }) {
+        return this.service.fetch({ limit, offset, order_by, sort, fields, exclude });
     }
 
     async update(uuid, product) {

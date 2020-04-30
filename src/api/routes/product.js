@@ -34,12 +34,12 @@ module.exports = app => {
         middlewares.attachCurrentUser,
         middlewares.isAggregatorOrAdmin,
         celebrateValidation,
-        productController.update
+        eah(productController.update)
     );
 
-    // router.get('/:id', eah(farmerController.get));
+    router.get('/:uuid', productController.get);
 
-    // router.get('', eah(farmerController.fetch));
+    router.get('', productController.fetch);
 
 
 

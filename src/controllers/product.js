@@ -71,16 +71,30 @@ module.exports = class ProductController {
         return util.send(res);
     }
 
-    static template1() {
-
-    }
-
     static async fetch(req, res) {
-        return ProductController.baseController.fetch(req, res);
+        return ProductController.baseController.fetch(req, res, ['id', 'updatedAt']);
     }
 
     static async get(req, res) {
-        return ProductController.baseController.get(req, res);
+        const { uuid } = req.params;
+        const product = await ProductController.productService.get({ uuid: uuid });
+        if (!product) {
+            const msg = `Product not found.`;
+            util.setError(404, msg);
+        } else {
+            const msg = `Product found.`;
+            const data = {
+                name: product.name,
+                slug: product.slug,
+                description: product.description,
+                image: product.image,
+                classification: product.classification,
+                uuid: product.uuid,
+                createdAt: product.createdAt
+            };
+            util.setSuccess(200, msg, data)
+        }
+        return util.send(res);
     }
 
 };
