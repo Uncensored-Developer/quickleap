@@ -41,7 +41,38 @@ module.exports = class ProductController {
     }
 
     static async update(req, res) {
-        return ProductController.baseController.update(req, res);
+        const {uuid} = req.params;
+        const PRODUCT = await ProductController.productService.get({ uuid });
+        if (!PRODUCT) {
+            const msg = `Product not found.`;
+            util.setError(404, msg);
+            return util.send(res);
+        }
+
+        const nameSlug = slugify(req.body.name, { lower: true });
+        // let product = await ProductController.productService.get({ slug: nameSlug });
+        // if (product) {
+        //     const msg = `Product with this name already exists.`;
+        //     util.setError(400, msg);
+        // } else {
+        const data = {
+            name: req.body.name,
+            slug: nameSlug,
+            description: req.body.description,
+            image: req.body.image,
+            classification: req.body.classification,
+        };
+        let product = await ProductController.productService.update({uuid:uuid}, data);
+        data.createdAt = product.createdAt;
+        data.uuid = uuid;
+        const msg = 'Product Updated.';
+        util.setSuccess(201, msg, data);
+        // }
+        return util.send(res);
+    }
+
+    static template1() {
+
     }
 
     static async fetch(req, res) {

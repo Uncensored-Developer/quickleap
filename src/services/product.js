@@ -20,8 +20,8 @@ module.exports = class ProductService {
         return this.service.fetch({ limit, offset, order_by, sort, fields });
     }
 
-    async update(id, product) {
-        return this.service.update(id, product)
+    async update(uuid, product) {
+        return this.service.update(uuid, product)
     }
 
     async delete(id) {

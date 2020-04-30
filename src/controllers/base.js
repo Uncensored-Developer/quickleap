@@ -37,7 +37,7 @@ module.exports = class BaseController {
 
         delete req.body.images;
 
-        const updatedObj = await this.service.update(id, req.body);
+        const updatedObj = await this.service.update({id: id}, req.body);
         if (this.image_service) {
             // save attached images
             let img_arr = []

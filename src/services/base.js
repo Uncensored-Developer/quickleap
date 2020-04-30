@@ -48,18 +48,18 @@ module.exports = class BaseService {
         }
     }
 
-    async update(id, data) {
+    async update(query, data) {
         try {
-          await this.model.update(data, {where: {id: id}});
+          await this.model.update(data, {where: query});
           return data
         } catch (e) {
           throw e;
         }
     }
 
-    async delete(id) {
+    async delete(query) {
         try {
-          return await this.model.destroy({where: {id: id}});
+          return await this.model.destroy({where: query});
         } catch (e) {
           throw e;
         }
