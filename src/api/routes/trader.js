@@ -1,7 +1,6 @@
 const express = require('express');
 const celebrate = require('celebrate');
 const eah = require('express-async-handler');
-const typedi = require('typedi');
 const traderController = require('../../controllers/trader');
 const middlewares = require('../middlewares');
 

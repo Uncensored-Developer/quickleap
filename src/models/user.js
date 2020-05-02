@@ -56,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.Trucker);
     User.hasOne(models.Warehouse);
     User.hasOne(models.Referral);
+    User.hasOne(models.ProductInfo);
   };
   return User;
 };

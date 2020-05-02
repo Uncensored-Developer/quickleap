@@ -6,6 +6,7 @@ const traderRoute = require('./routes/trader');
 const truckerRoute = require('./routes/trucker');
 const warehouseRoute = require('./routes/warehouse');
 const productRoute = require('./routes/product');
+const productinfoRoute = require('./routes/productInfo');
 
 
 module.exports = () => {
@@ -18,6 +19,7 @@ module.exports = () => {
   truckerRoute(app);
   warehouseRoute(app);
   productRoute(app);
+  productinfoRoute(app);
 
   return app;
 };

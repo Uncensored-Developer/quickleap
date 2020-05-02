@@ -23,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
+        // price: {
+        //     type: DataTypes.VIRTUAL,
+        // },
         uuid: {
             type: DataTypes.STRING(10),
             allowNull: false,
@@ -31,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {});
     Product.associate = function (models) {
         // associations can be defined here
+        Product.hasOne(models.ProductInfo);
     };
     return Product;
 };
