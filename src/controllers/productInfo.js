@@ -1,6 +1,4 @@
 const typedi = require('typedi');
-const uid = require('rand-token').uid
-const slugify = require('slugify');
 const Util = require('../utils/utils');
 const productService = require('../services/product');
 const productInfoService = require('../services/productInfo');
@@ -16,7 +14,7 @@ module.exports = class ProductInfoController {
     static get productInfoService() { return typedi.Container.get(productInfoService); }
 
     static get baseController() {
-        return new BaseController(ProductController.productService, 'Product');
+        return new BaseController(ProductController.productService, 'Product Info');
     }
 
     static async create(req, res) {

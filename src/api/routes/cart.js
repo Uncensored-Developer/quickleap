@@ -1,7 +1,7 @@
 const express = require('express');
 const celebrate = require('celebrate');
 const eah = require('express-async-handler');
-const productInfoController = require('../../controllers/productInfo');
+const cartController = require('../../controllers/cart');
 const middlewares = require('../middlewares');
 
 const router = express.Router();
@@ -9,25 +9,19 @@ const router = express.Router();
 const celebrateValidation = celebrate.celebrate({
     body: celebrate.Joi.object({
         productUUID: celebrate.Joi.string().required(),
-        grade: celebrate.Joi.string().valid('grade1', 'grade2', 'grade3', 'export').required(),
-        price: celebrate.Joi.number().required(),
-        month: celebrate.Joi.number().min(1).max(new Date().getMonth() + 1).required(),
-        year: celebrate.Joi.number().max(new Date().getFullYear()),
-        location: celebrate.Joi.string().required(),
-        quantity: celebrate.Joi.number().required(),
+        quantity: celebrate.Joi.number().min(1).required(),
     }),
 });
 
 module.exports = app => {
-    app.use('/productInfo', router);
+    app.use('/cart', router);
 
     router.post(
         '',
         middlewares.isAuth,
         middlewares.attachCurrentUser,
-        middlewares.isTraderOrAggregatorOrAdmin,
         celebrateValidation,
-        eah(productInfoController.create)
+        cartController.create
     )
 
     // router.put(
