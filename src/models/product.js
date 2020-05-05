@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     Product.associate = function (models) {
         // associations can be defined here
         Product.hasOne(models.ProductInfo);
+        Product.hasOne(models.Cart);
     };
     return Product;
 };

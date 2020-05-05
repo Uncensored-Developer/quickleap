@@ -11,6 +11,8 @@ const celebrateValidation = celebrate.celebrate({
         productUUID: celebrate.Joi.string().required(),
         grade: celebrate.Joi.string().valid('grade1', 'grade2', 'grade3', 'export').required(),
         price: celebrate.Joi.number().required(),
+        month: celebrate.Joi.number().min(1).max(new Date().getMonth() + 1).required(),
+        year: celebrate.Joi.number().max(new Date().getFullYear()),
         location: celebrate.Joi.string().required(),
         quantity: celebrate.Joi.number().required(),
     }),

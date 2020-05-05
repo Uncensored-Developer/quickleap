@@ -11,6 +11,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        month: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        year: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         location: {
             type: DataTypes.TEXT,
             allowNull: false

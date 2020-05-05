@@ -31,7 +31,9 @@ module.exports = class ProductInfoController {
                 price: req.body.price,
                 grade: req.body.grade,
                 location: req.body.location,
-                quantity: req.body.quantity
+                quantity: req.body.quantity,
+                month: req.body.month,
+                year: req.body.year || new Date().getFullYear()
             }
 
             const productInfo = await ProductInfoController.productInfoService.create(data);
