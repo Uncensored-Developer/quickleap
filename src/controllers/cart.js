@@ -19,9 +19,16 @@ module.exports = class CartController {
 
     static async create(req, res) {
         const PRODUCT = await CartController.productService.get({ uuid: req.body.productUUID });
+        const CART_ITEM = await CartController.cartService.get({
+            ProductId: PRODUCT.id,
+            UserId: req.user.id
+        });
         if (!PRODUCT) {
             const msg = `Product not found.`;
             util.setError(404, msg);
+        } else if(CART_ITEM) {
+            const msg = `Product already in cart.`;
+            util.setError(400, msg);
         } else {
             const data = {
                 ProductId: PRODUCT.id,
@@ -37,7 +44,7 @@ module.exports = class CartController {
     }
 
     static async update(req, res) {
-
+        return CartController.baseController.update(req, res);
     }
 
     static async fetch(req, res) {

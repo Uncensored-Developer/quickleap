@@ -6,12 +6,6 @@ const middlewares = require('../middlewares');
 
 const router = express.Router();
 
-const celebrateValidation = celebrate.celebrate({
-    body: celebrate.Joi.object({
-        productUUID: celebrate.Joi.string().required(),
-        quantity: celebrate.Joi.number().min(1).required(),
-    }),
-});
 
 module.exports = app => {
     app.use('/cart', router);
@@ -20,18 +14,26 @@ module.exports = app => {
         '',
         middlewares.isAuth,
         middlewares.attachCurrentUser,
-        celebrateValidation,
-        cartController.create
+        celebrate.celebrate({
+            body: celebrate.Joi.object({
+                productUUID: celebrate.Joi.string().required(),
+                quantity: celebrate.Joi.number().min(1).required(),
+            }),
+        }),
+        eah(cartController.create)
     )
 
-    // router.put(
-    //     '/:uuid',
-    //     middlewares.isAuth,
-    //     middlewares.attachCurrentUser,
-    //     middlewares.isAggregatorOrAdmin,
-    //     celebrateValidation,
-    //     eah(productController.update)
-    // );
+    router.put(
+        '/:id',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        celebrate.celebrate({
+            body: celebrate.Joi.object({
+                quantity: celebrate.Joi.number().min(1).required(),
+            }),
+        }),
+        cartController.update
+    );
 
     // router.get('/:uuid', productController.get);
 

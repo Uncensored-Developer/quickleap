@@ -17,7 +17,7 @@ module.exports = class BaseController {
   async update(req, res) {
     const {id} = req.params;
     const images = req.body.images;
-
+    
     if (!Number(id)) {
         const msg = 'Please input a valid numeric id.';
         util.setError(400, msg);
