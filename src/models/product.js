@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true
         },
-        // price: {
-        //     type: DataTypes.VIRTUAL,
-        // },
+        prices: {
+            type: DataTypes.VIRTUAL,
+        },
         uuid: {
             type: DataTypes.STRING(10),
             allowNull: false,

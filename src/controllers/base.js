@@ -66,6 +66,37 @@ module.exports = class BaseController {
     return util.send(res);
   }
 
+  async delete(req, res) {
+    const { id } = req.params;
+
+    if (!Number(id)) {
+        const msg = 'Please input a valid numeric id.';
+        util.setError(400, msg);
+        return util.send(res);
+    }
+    const obj = await this.service.get({ id: id });
+
+    if (!obj) {
+        const msg = `${this.noun} not found.`;
+        util.setError(404, msg);
+    } else {
+        if (obj.UserId !== req.user.id) {
+            const msg = `You are not permitted to update this ${this.noun}.`;
+            util.setError(403, msg);
+            return util.send(res);
+        }
+
+        delete req.body.images;
+
+        await this.service.delete({ id: id });
+        
+        const msg = `${this.noun} removed.`;
+        util.setSuccess(204, msg, {});
+    }
+
+    return util.send(res);
+  }
+
   async fetch(req, res, exclude) {
     const params = helpers.getParams(req);
 

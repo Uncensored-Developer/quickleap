@@ -14,7 +14,7 @@ module.exports = class CartController {
     static get cartService() { return typedi.Container.get(cartService); }
 
     static get baseController() {
-        return new BaseController(CartController.cartService, 'Cart');
+        return new BaseController(CartController.cartService, 'Cart Item');
     }
 
     static async create(req, res) {
@@ -24,10 +24,10 @@ module.exports = class CartController {
             UserId: req.user.id
         });
         if (!PRODUCT) {
-            const msg = `Product not found.`;
+            const msg = 'Product not found.';
             util.setError(404, msg);
         } else if(CART_ITEM) {
-            const msg = `Product already in cart.`;
+            const msg = 'Product already in cart.';
             util.setError(400, msg);
         } else {
             const data = {
@@ -60,17 +60,28 @@ module.exports = class CartController {
         const ITEMS = await CartController.cartService.fetch(params);
 
         if (ITEMS.length > 0) {
-            const msg = `Cart items retrieved.`;
+            const msg = 'Cart items retrieved.';
             util.setSuccess(200, msg, ITEMS)
         } else {
-            const msg = `Cart is empty.`;
+            const msg = 'Cart is empty.';
             util.setSuccess(200, msg);
         }
         return util.send(res);
     }
 
-    static async get(req, res) {
+    static async remove(req, res) {
+        if (req.params.id) {
+            return CartController.baseController.delete(req, res);
+        }
 
+        await CartController.cartService.delete({ UserId: req.user.id });
+        const msg = 'Cart Cleared.'
+        util.setSuccess(200, msg);
+        return util.send(res);
+    }
+
+    static async clear(req, res) {
+        
     }
 
 };

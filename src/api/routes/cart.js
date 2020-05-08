@@ -42,10 +42,11 @@ module.exports = app => {
         eah(cartController.fetch)
     );
 
-    // router.get('/:uuid', productController.get);
-
-    // router.get('', productController.fetch);
-
-
+    router.delete(
+        '/:id?',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        eah(cartController.remove)
+    );
 
 };
