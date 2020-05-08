@@ -21,7 +21,7 @@ module.exports = app => {
             }),
         }),
         eah(cartController.create)
-    )
+    );
 
     router.put(
         '/:id',
@@ -32,7 +32,14 @@ module.exports = app => {
                 quantity: celebrate.Joi.number().min(1).required(),
             }),
         }),
-        cartController.update
+        eah(cartController.update)
+    );
+
+    router.get(
+        '',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        eah(cartController.fetch)
     );
 
     // router.get('/:uuid', productController.get);

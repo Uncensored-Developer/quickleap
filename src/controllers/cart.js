@@ -48,7 +48,25 @@ module.exports = class CartController {
     }
 
     static async fetch(req, res) {
-        return CartController.baseController.fetch(req, res, ['id', 'updatedAt']);
+        const params = {
+            limit: 100,
+            offset: undefined,
+            order_by: 'id',
+            sort: 'ASC',
+            fields: {UserId: req.user.id},
+            exclude: ['updatedAt', 'UserId']
+        };
+
+        const ITEMS = await CartController.cartService.fetch(params);
+
+        if (ITEMS.length > 0) {
+            const msg = `Cart items retrieved.`;
+            util.setSuccess(200, msg, ITEMS)
+        } else {
+            const msg = `Cart is empty.`;
+            util.setSuccess(200, msg);
+        }
+        return util.send(res);
     }
 
     static async get(req, res) {

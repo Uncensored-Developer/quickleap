@@ -31,7 +31,7 @@ module.exports = class BaseService {
     }
 
     async fetch({limit, offset, order_by, sort, fields, exclude}) {
-        let param = {
+        let params = {
           offset: offset, limit: limit,
           order: [
               [order_by, sort.toUpperCase()],
@@ -39,13 +39,14 @@ module.exports = class BaseService {
           ]
         };
         if (fields) {
-          param.where = fields;
+          params.where = fields;
         }
         if (exclude) {
-          param.attributes = {exclude: exclude};
+          params.attributes = {exclude: exclude};
         }
+        
         try {
-          return await this.model.findAll(param);
+          return await this.model.findAll(params);
         } catch (e) {
           throw e;
         }
