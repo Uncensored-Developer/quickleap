@@ -11,6 +11,7 @@
     "migrate_prod_db": "node src/migrate.js",
     "migrate_test_db": "node src/migrate.js",
     "drop_tables": "node src/drop_tables.js",
+    "create_admin": "node src/utils/admin.js",
     "check": "node src/check.js",
     "test": "export NODE_ENV=test && npm run drop_tables  && npm run migrate_test_db && mocha src/tests/**/**/*.js --timeout 20000 --exit"
   },

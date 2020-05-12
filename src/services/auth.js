@@ -10,6 +10,7 @@ const farmerService = require('../services/farmer');
 const traderService = require('../services/trader');
 const truckerService = require('../services/trucker');
 const warehouseService = require('../services/warehouse');
+const logger = require('../loaders/logger');
 
 
 module.exports = class AuthService {
@@ -51,7 +52,7 @@ module.exports = class AuthService {
 
       let accountTypeRecordId = null
 
-      if (userRecord.account_type !== 'aggregator') {
+      if (userRecord.account_type !== 'aggregator' && userRecord.account_type !== 'admin') {
         const accountTypeRecord = await accountService.create({ UserId: userRecord.id });
         accountTypeRecordId = accountTypeRecord.id
       }
