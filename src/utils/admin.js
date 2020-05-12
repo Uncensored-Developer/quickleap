@@ -17,6 +17,9 @@ const data = {account_type: 'admin'}
 
 rl.question('Enter username: ', (username) => {
     data.username = username;
+
+    // mute stdout
+    rl.stdoutMuted = true;
    
     rl.question('Enter password: ', (password) => {
         if(password.length >= 8) {
@@ -42,5 +45,13 @@ rl.question('Enter username: ', (username) => {
             rl.close()
         }
     })
+
+    rl._writeToOutput = function _writeToOutput(stringToWrite) {
+        if (rl.stdoutMuted) {
+            rl.output.write('*');
+        } else {
+            rl.output.write(stringToWrite);
+        }
+    }
 })
 
