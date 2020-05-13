@@ -1,57 +1,45 @@
 const typedi = require('typedi');
-const readline = require('readline');
+const readlineSync = require('readline-sync');
+const Writable = require('stream').Writable;
 const authService = require('../services/auth');
 const logger = require('../loaders/logger');
 
 
 typedi.Container.set('logger', logger);
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
-
 const authServiceInstance = typedi.Container.get(authService);
 
-const data = {account_type: 'admin'}
+const data = { account_type: 'admin' };
 
-rl.question('Enter username: ', (username) => {
-    data.username = username;
+const username = readlineSync.question('Enter username: ');
 
-    // mute stdout
-    rl.stdoutMuted = true;
-   
-    rl.question('Enter password: ', (password) => {
-        if(password.length >= 8) {
-            const password1 = password
-            rl.question('Re-Enter password: ', (password) => {
+let repeat = true;
 
-                if (password1 !== password) {
-                    console.log('Password do not match.');
-                    rl.close()
-                } else {
-                    data.password = password;
-                    authServiceInstance.signUp(data).then((data)=> {
-                        console.log('Admin created successfully!');
-                        rl.close()
-                    }).catch((e) => {
-                        console.log('Something went wrong, try again later.');
-                        rl.close()
-                    })
-                }
-            })
+let password1;
+
+while (repeat) {
+    password1 = readlineSync.question('Enter password: ', {hideEchoBack: true, mask: '*'});
+    if (password1.length >= 8) {
+        const password2 = readlineSync.question('Re-Enter password: ', { hideEchoBack: true, mask: '*' });
+        if (password1 === password2) {
+            repeat = false;
         } else {
-            console.log('Password must be atleast 8 characters.');
-            rl.close()
+            console.log('\x1b[41m', 'Passwords do not match.')
+            console.log('\x1b[0m');
         }
-    })
-
-    rl._writeToOutput = function _writeToOutput(stringToWrite) {
-        if (rl.stdoutMuted) {
-            rl.output.write('*');
-        } else {
-            rl.output.write(stringToWrite);
-        }
+    } else {
+        console.log('\x1b[41m', 'Password should be atleast 8 characters.');
+        console.log('\x1b[0m');
     }
-})
+}
 
+data.password = password1;
+data.username = username;
+
+authServiceInstance.signUp(data).then((data) => {
+    console.log('\x1b[42m','Admin created successfully!');
+    console.log('\x1b[0m');
+}).catch((e) => {
+    console.log('\x1b[41m', 'Something went wrong, try again later.');
+    console.log('\x1b[0m');
+})
