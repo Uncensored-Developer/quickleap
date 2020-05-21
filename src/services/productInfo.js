@@ -4,6 +4,7 @@ const BaseService = require('./base');
 
 module.exports = class ProductInfoService {
 
+    // eslint-disable-next-line no-unused-vars
     constructor(container) {
         this.service = new BaseService(db.ProductInfo);
     }

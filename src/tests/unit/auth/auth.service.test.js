@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const typedi = require('typedi');
 const expect = require('chai').expect;
 const express = require('express');

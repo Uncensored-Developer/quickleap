@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
   }, {});
+  // eslint-disable-next-line no-unused-vars
   Trader.associate = function(models) {
     // associations can be defined here
   };

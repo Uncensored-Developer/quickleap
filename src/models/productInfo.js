@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {});
+    // eslint-disable-next-line no-unused-vars
     ProductInfo.associate = function (models) {
         // associations can be defined here
     };

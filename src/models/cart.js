@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {});
+    // eslint-disable-next-line no-unused-vars
     Cart.associate = function (models) {
         // associations can be defined here
     };

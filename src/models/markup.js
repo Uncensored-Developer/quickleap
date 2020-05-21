@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {});
+    // eslint-disable-next-line no-unused-vars
     MarkUp.associate = function (models) {
         // associations can be defined here
     };

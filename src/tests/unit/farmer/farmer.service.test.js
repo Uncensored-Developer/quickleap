@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const typedi = require('typedi');
 const farmerService = require('../../../services/farmer');
 const expect = require('chai').expect;

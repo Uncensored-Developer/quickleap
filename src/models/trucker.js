@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   }, {});
+  // eslint-disable-next-line no-unused-vars
   Trucker.associate = function(models) {
 
   };

@@ -3,6 +3,7 @@ const db = require('../models');
 
 module.exports = class UserService {
 
+  // eslint-disable-next-line no-unused-vars
   constructor(container) {
 
   }
