@@ -1,5 +1,4 @@
 const typedi = require('typedi');
-const Util = require('../utils/utils');
 const warehouseService = require('../services/warehouse');
 const warehouseImageService = require('../services/warehouseimage');
 const BaseController = require('./base');

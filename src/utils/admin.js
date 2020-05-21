@@ -1,6 +1,5 @@
 const typedi = require('typedi');
 const readlineSync = require('readline-sync');
-const Writable = require('stream').Writable;
 const authService = require('../services/auth');
 const logger = require('../loaders/logger');
 
@@ -36,9 +35,11 @@ while (repeat) {
 data.password = password1;
 data.username = username;
 
+// eslint-disable-next-line no-unused-vars
 authServiceInstance.signUp(data).then((data) => {
     console.log('\x1b[42m','Admin created successfully!');
     console.log('\x1b[0m');
+// eslint-disable-next-line no-unused-vars
 }).catch((e) => {
     console.log('\x1b[41m', 'Something went wrong, try again later.');
     console.log('\x1b[0m');

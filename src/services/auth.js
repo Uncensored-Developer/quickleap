@@ -10,7 +10,6 @@ const farmerService = require('../services/farmer');
 const traderService = require('../services/trader');
 const truckerService = require('../services/trucker');
 const warehouseService = require('../services/warehouse');
-const logger = require('../loaders/logger');
 
 
 module.exports = class AuthService {
@@ -118,16 +117,12 @@ module.exports = class AuthService {
     switch (account_type) {
       case 'farmer':
         return typedi.Container.get(farmerService);
-        break;
       case 'trader':
         return typedi.Container.get(traderService);
-        break;
       case 'trucker':
         return typedi.Container.get(truckerService);
-        break;
       case 'warehouse':
         return typedi.Container.get(warehouseService);
-        break;
       default:
         return null;
     }

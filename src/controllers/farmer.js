@@ -1,5 +1,4 @@
 const typedi = require('typedi');
-const Util = require('../utils/utils');
 const farmerService = require('../services/farmer');
 const BaseController = require('./base');
 

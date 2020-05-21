@@ -80,8 +80,4 @@ module.exports = class CartController {
         return util.send(res);
     }
 
-    static async clear(req, res) {
-        
-    }
-
 };

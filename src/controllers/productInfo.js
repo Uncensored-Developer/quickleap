@@ -14,7 +14,7 @@ module.exports = class ProductInfoController {
     static get productInfoService() { return typedi.Container.get(productInfoService); }
 
     static get baseController() {
-        return new BaseController(ProductController.productService, 'Product Info');
+        return new BaseController(ProductInfoController.productService, 'Product Info');
     }
 
     static async create(req, res) {
@@ -46,7 +46,7 @@ module.exports = class ProductInfoController {
     }
 
     static async fetch(req, res) {
-        return ProductController.baseController.fetch(req, res, ['id', 'updatedAt']);
+        return ProductInfoController.baseController.fetch(req, res, ['id', 'updatedAt']);
     }
 
     static async get(req, res) {

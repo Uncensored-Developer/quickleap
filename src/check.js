@@ -1,7 +1,7 @@
 const userService = require('./services/user');
 
 
-data = {
+const data = {
   username: '08022237672',
   password: 'goodbrain',
   account_type: 'trader',
@@ -9,6 +9,6 @@ data = {
   referral_code: '654756'
 };
 
-user = new userService().createUser(data);
+const user = new userService().createUser(data);
 
 console.log(user);

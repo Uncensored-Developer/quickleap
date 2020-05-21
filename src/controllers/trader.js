@@ -1,5 +1,4 @@
 const typedi = require('typedi');
-const Util = require('../utils/utils');
 const traderService = require('../services/trader');
 const BaseController = require('./base');
 

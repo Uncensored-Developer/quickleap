@@ -13,6 +13,7 @@
     "drop_tables": "node src/drop_tables.js",
     "create_admin": "node src/utils/admin.js",
     "check": "node src/check.js",
+    "lint": "eslint src",
     "test": "export NODE_ENV=test && npm run drop_tables  && npm run migrate_test_db && mocha src/tests/**/**/*.js --timeout 20000 --exit"
   },
   "dependencies": {

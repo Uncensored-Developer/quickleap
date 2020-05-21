@@ -1,5 +1,3 @@
-const typedi = require('typedi');
-const EventEmitter = require('events');
 const event = require('./events');
 
 
