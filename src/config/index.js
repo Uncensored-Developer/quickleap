@@ -22,6 +22,10 @@ module.exports = {
     level: process.env.LOG_LEVEL || 'silly',
   },
 
+  markUp: {
+    product: 50
+  },
+
   databaseUrl: process.env.DATABASE_URL,
 
   testDatabaseUrl: process.env.TEST_DATABASE_URL,

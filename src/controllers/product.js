@@ -3,6 +3,7 @@ const uid = require('rand-token').uid
 const slugify = require('slugify');
 const Util = require('../utils/utils');
 const productService = require('../services/product');
+const productInfoService = require('../services/productInfo');
 const BaseController = require('./base');
 
 
@@ -12,6 +13,7 @@ const util = new Util();
 module.exports = class ProductController {
 
     static get productService() { return typedi.Container.get(productService); }
+    static get productInfoService() { return typedi.Container.get(productInfoService); }
 
     static get baseController() {
         return new BaseController(ProductController.productService, 'Product');
@@ -83,6 +85,23 @@ module.exports = class ProductController {
             util.setError(404, msg);
         } else {
             const msg = `Product found.`;
+            const filter = {
+                limit: 1,
+                offset: undefined,
+                order_by: 'price',
+                sort: 'DESC',
+                fields: {
+                    ProductId: product.id,
+                    grade: 'grade1'
+                }
+            };
+            const grade1MaxPrice = await ProductController.productInfoService.fetch(filter);
+            filter.fields.grade = 'grade2';
+            const grade2MaxPrice = await ProductController.productInfoService.fetch(filter);
+            filter.fields.grade = 'grade3';
+            const grade3MaxPrice = await ProductController.productInfoService.fetch(filter);
+            filter.fields.grade = 'export';
+            const exportGradeMaxPrice = await ProductController.productInfoService.fetch(filter);
             const data = {
                 name: product.name,
                 slug: product.slug,
@@ -90,7 +109,13 @@ module.exports = class ProductController {
                 image: product.image,
                 classification: product.classification,
                 uuid: product.uuid,
-                createdAt: product.createdAt
+                createdAt: product.createdAt,
+                prices: {
+                    export: (exportGradeMaxPrice.length > 0) ? exportGradeMaxPrice.pop().price : null,
+                    grade1: (grade1MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null,
+                    grade2: (grade2MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null,
+                    grade3: (grade3MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null
+                }
             };
             util.setSuccess(200, msg, data)
         }

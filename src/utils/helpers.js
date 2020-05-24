@@ -1,3 +1,6 @@
+const config = require('../config');
+
+
 module.exports = (function () {
 
     let params = (req) => {
@@ -27,6 +30,10 @@ module.exports = (function () {
           }
       }
     };
+
+    const getMarkedUpPrice = (price) => {
+
+    }
 
     return {
         getParams: params,

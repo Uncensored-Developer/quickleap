@@ -44,7 +44,6 @@ module.exports = class BaseService {
         if (exclude) {
           params.attributes = {exclude: exclude};
         }
-        
         try {
           return await this.model.findAll(params);
         } catch (e) {
