@@ -79,7 +79,6 @@ module.exports = class ProductController {
         const getProducts = async () => {
             let products = []
             for (let product of results) {
-                console.log(product.id)
                 products.push({
                     name: product.name,
                     slug: product.slug,

@@ -3,6 +3,7 @@ const Util = require('../utils/utils');
 const productService = require('../services/product');
 const cartService = require('../services/cart');
 const BaseController = require('./base');
+const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
 
 const util = new Util();
@@ -59,11 +60,31 @@ module.exports = class CartController {
             exclude: ['updatedAt', 'UserId']
         };
 
-        const ITEMS = await CartController.cartService.fetch(params);
+        const items = await CartController.cartService.fetch(params);
 
-        if (ITEMS.length > 0) {
+        const getItems = async () => {
+            let products = []
+            for (let item of items) {
+                const product = await CartController.productService.get({id: item.ProductId});
+                products.push({
+                    id: item.id,
+                    quantity: item.quantity,
+                    createdAt: item.createdAt,
+                    grade: item.grade,
+                    product: {
+                        name: product.name,
+                        uuid: product.uuid,
+                        price: await getMaxMarkedUpProductPrice(product.id, item.grade)
+                    }
+                });
+            }
+
+            return products
+        }
+
+        if (items.length > 0) {
             const msg = 'Cart items retrieved.';
-            util.setSuccess(200, msg, ITEMS)
+            util.setSuccess(200, msg, await getItems())
         } else {
             const msg = 'Cart is empty.';
             util.setSuccess(200, msg);
