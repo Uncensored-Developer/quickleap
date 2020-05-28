@@ -5,6 +5,7 @@ const Util = require('../utils/utils');
 const productService = require('../services/product');
 const productInfoService = require('../services/productInfo');
 const BaseController = require('./base');
+const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
 
 const util = new Util();
@@ -74,7 +75,24 @@ module.exports = class ProductController {
     }
 
     static async fetch(req, res) {
-        return ProductController.baseController.fetch(req, res, ['id', 'updatedAt']);
+        const results = await ProductController.baseController.fetch(req, res, ['id', 'updatedAt'], true);
+        let products = []
+        for(let product of results) {
+            
+            products.push({
+                name: product.name,
+                slug: product.slug,
+                uuid: product.uuid,
+            });
+        }
+        if (results.length > 0) {
+            const msg = 'Products Retrieved.'
+            util.setSuccess(200, msg, products);
+        } else {
+            const msg = 'No Products found.';
+            util.setSuccess(200, msg);
+        }
+        return util.send(res);
     }
 
     static async get(req, res) {
@@ -85,23 +103,7 @@ module.exports = class ProductController {
             util.setError(404, msg);
         } else {
             const msg = `Product found.`;
-            const filter = {
-                limit: 1,
-                offset: undefined,
-                order_by: 'price',
-                sort: 'DESC',
-                fields: {
-                    ProductId: product.id,
-                    grade: 'grade1'
-                }
-            };
-            const grade1MaxPrice = await ProductController.productInfoService.fetch(filter);
-            filter.fields.grade = 'grade2';
-            const grade2MaxPrice = await ProductController.productInfoService.fetch(filter);
-            filter.fields.grade = 'grade3';
-            const grade3MaxPrice = await ProductController.productInfoService.fetch(filter);
-            filter.fields.grade = 'export';
-            const exportGradeMaxPrice = await ProductController.productInfoService.fetch(filter);
+            
             const data = {
                 name: product.name,
                 slug: product.slug,
@@ -110,12 +112,7 @@ module.exports = class ProductController {
                 classification: product.classification,
                 uuid: product.uuid,
                 createdAt: product.createdAt,
-                prices: {
-                    export: (exportGradeMaxPrice.length > 0) ? exportGradeMaxPrice.pop().price : null,
-                    grade1: (grade1MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null,
-                    grade2: (grade2MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null,
-                    grade3: (grade3MaxPrice.length > 0) ? grade1MaxPrice.pop().price : null
-                }
+                prices: await getMaxMarkedUpProductPrice(product.id)
             };
             util.setSuccess(200, msg, data)
         }

@@ -97,7 +97,7 @@ module.exports = class BaseController {
     return util.send(res);
   }
 
-  async fetch(req, res, exclude) {
+  async fetch(req, res, exclude, return_results) {
     const params = helpers.getParams(req);
 
     const allowed_filters = await this.service.get_attrs();
@@ -105,16 +105,19 @@ module.exports = class BaseController {
     helpers.checkForInvalidFilter(allowed_filters, params.fields, util, res);
 
     params.exclude = exclude;
-    const farmers = await this.service.fetch(params);
+    const results = await this.service.fetch(params);
 
-    if (farmers.length > 0) {
-        const msg = `${this.noun}s retrieved.`;
-        util.setSuccess(200, msg, farmers)
-    } else {
-        const msg = `No ${this.noun}s found.`;
-        util.setSuccess(200, msg);
+    if(!return_results) {
+        if (results.length > 0) {
+            const msg = `${this.noun}s retrieved.`;
+            util.setSuccess(200, msg, results)
+        } else {
+            const msg = `No ${this.noun}s found.`;
+            util.setSuccess(200, msg);
+        }
+        return util.send(res);
     }
-    return util.send(res);
+    return results
   }
 
   async get(req, res) {
