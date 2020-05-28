@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         quantity: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        grade: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
         }
     }, {});
     // eslint-disable-next-line no-unused-vars

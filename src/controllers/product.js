@@ -75,19 +75,24 @@ module.exports = class ProductController {
     }
 
     static async fetch(req, res) {
-        const results = await ProductController.baseController.fetch(req, res, ['id', 'updatedAt'], true);
-        let products = []
-        for(let product of results) {
-            
-            products.push({
-                name: product.name,
-                slug: product.slug,
-                uuid: product.uuid,
-            });
+        const results = await ProductController.baseController.fetch(req, res, ['updatedAt'], true);
+        const getProducts = async () => {
+            let products = []
+            for (let product of results) {
+                console.log(product.id)
+                products.push({
+                    name: product.name,
+                    slug: product.slug,
+                    uuid: product.uuid,
+                    price: await getMaxMarkedUpProductPrice(product.id, 'grade1')
+                });
+            }
+
+            return products
         }
         if (results.length > 0) {
             const msg = 'Products Retrieved.'
-            util.setSuccess(200, msg, products);
+            util.setSuccess(200, msg, await getProducts());
         } else {
             const msg = 'No Products found.';
             util.setSuccess(200, msg);

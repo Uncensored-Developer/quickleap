@@ -21,6 +21,7 @@ module.exports = class CartController {
         const PRODUCT = await CartController.productService.get({ uuid: req.body.productUUID });
         const CART_ITEM = await CartController.cartService.get({
             ProductId: PRODUCT.id,
+            grade: req.body.grade,
             UserId: req.user.id
         });
         if (!PRODUCT) {
@@ -34,6 +35,7 @@ module.exports = class CartController {
                 ProductId: PRODUCT.id,
                 UserId: req.user.id,
                 quantity: req.body.quantity,
+                grade: req.body.grade
             }
 
             const cart = await CartController.cartService.create(data);

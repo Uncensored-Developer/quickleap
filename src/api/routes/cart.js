@@ -18,6 +18,7 @@ module.exports = app => {
             body: celebrate.Joi.object({
                 productUUID: celebrate.Joi.string().required(),
                 quantity: celebrate.Joi.number().min(1).required(),
+                grade: celebrate.Joi.string().valid('grade1', 'grade2', 'grade3', 'export').required()
             }),
         }),
         eah(cartController.create)
