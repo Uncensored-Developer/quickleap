@@ -141,6 +141,7 @@ module.exports = class AuthService {
         name: user.name,
         username: user.username,
         exp: exp.getTime() / 1000,
+        is_verified: user.is_verified
       },
       config.jwtSecret,
     );
