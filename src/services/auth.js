@@ -112,6 +112,31 @@ module.exports = class AuthService {
 
   }
 
+  async changePassword(user, userInput) {
+    try {
+      const userRecord = await this.userService.getUser(user.username);
+      if (!userRecord) { return null; }
+
+      const passwordIsValid = await bcrypt.compare(userInput.old_password, userRecord.password);
+      if (!passwordIsValid) { return 'invalid_password' }
+
+      this.logger.silly('Hashing password');
+
+      const hashedPassword = await bcrypt.hash(userInput.new_password, 8);
+
+      const data = {
+        password: hashedPassword
+      }
+      console.log(this.userService)
+      await this.userService.update({username: user.username}, data);
+
+      return 'password_changed';
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+
 
   getAccountTypeService(account_type) {
     switch (account_type) {

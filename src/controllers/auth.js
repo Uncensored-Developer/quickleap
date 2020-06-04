@@ -38,4 +38,17 @@ module.exports = class AuthController{
     return util.send(res);
   }
 
+  static async changePassword(req, res) {
+    const result = await AuthController.authService.changePassword(req.user, req.body);
+
+    if (result == null || result === 'invalid_password') {
+      const msg = 'Invalid Password';
+      util.setError(400, msg);
+    } else {
+      const msg = 'Password Changed.';
+      util.setSuccess(200, msg, result);
+    }
+    return util.send(res);
+  }
+
 };

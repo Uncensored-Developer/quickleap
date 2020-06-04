@@ -2,6 +2,7 @@ const express = require('express');
 const celebrate = require('celebrate');
 const eah = require('express-async-handler');
 const authController = require('../../controllers/auth');
+const middlewares = require('../middlewares');
 
 const router = express.Router();
 
@@ -31,6 +32,19 @@ module.exports = app => {
       }),
     }),
     eah(authController.login)
+  );
+
+  router.post(
+    '/change_password',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    celebrate.celebrate({
+      body: celebrate.Joi.object({
+        old_password: celebrate.Joi.string().required(),
+        new_password: celebrate.Joi.string().required(),
+      }),
+    }),
+    eah(authController.changePassword)
   );
 
 };
