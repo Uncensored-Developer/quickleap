@@ -101,6 +101,7 @@ module.exports = class AuthService {
         account_type: userRecord.account_type,
         referral_code: userRecord.referral_code,
         account_type_id: accountTypeRecord.id,
+        is_verified: userRecord.is_verified,
         name: userRecord.name
       };
 
@@ -127,7 +128,6 @@ module.exports = class AuthService {
       const data = {
         password: hashedPassword
       }
-      console.log(this.userService)
       await this.userService.update({username: user.username}, data);
 
       return 'password_changed';

@@ -60,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.ProductInfo);
     User.hasOne(models.Cart);
     User.hasOne(models.Order);
+    User.hasOne(models.VerificationCode);
   };
   return User;
 };
