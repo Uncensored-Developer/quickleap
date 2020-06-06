@@ -30,4 +30,32 @@ module.exports = class UserVerificationService {
         }
     }
 
+    async checkVerificationCode(user, code) {
+        try {
+            return await VerificationCode.findOne({
+                where: {
+                    code,
+                    UserId: user.id
+                }
+            });
+        } catch (e) {
+            this.logger.error(e);
+            throw e;
+        }
+    }
+
+    async deleteVerificationCode(user, code) {
+        try {
+            return await VerificationCode.destroy({
+                where: {
+                    code,
+                    UserId: user.id
+                }
+            });
+        } catch (e) {
+            this.logger.error(e);
+            throw e;
+        }
+    }
+
 };

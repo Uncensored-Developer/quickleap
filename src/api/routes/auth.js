@@ -54,4 +54,16 @@ module.exports = app => {
     eah(authController.initiateVerification)
   );
 
+  router.post(
+    '/verify',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    celebrate.celebrate({
+      body: celebrate.Joi.object({
+        code: celebrate.Joi.string().required(),
+      }),
+    }),
+    authController.verifyUser
+  );
+
 };

@@ -72,4 +72,24 @@ module.exports = class AuthController{
     return util.send(res);
   }
 
+  static async verifyUser(req, res) {
+    const result = await AuthController.userVerificationService.checkVerificationCode(req.user, req.body.code);
+
+    if (result) {
+      // update user is_verified to true
+      await AuthController.userService.update({username: req.user.username}, {is_verified: true});
+
+      await AuthController.userVerificationService.deleteVerificationCode(req.user, req.body.code);
+
+      const data = {};
+      const msg = 'Verification Successful';
+      util.setSuccess(200, msg, data);
+    } else {
+      const msg = 'Invalid Verification code.';
+      util.setError(400, msg);
+
+    }
+    return util.send(res);
+  }
+
 };

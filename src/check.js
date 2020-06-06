@@ -4,4 +4,4 @@ const verification = require('./services/userVerification');
 
 const verificationInstance = typedi.Container.get(verification);
 
-verificationInstance.createVerificationCode({});
+verificationInstance.checkVerificationCode({id: 1}, '07064').then((data) => {console.log(data)});
