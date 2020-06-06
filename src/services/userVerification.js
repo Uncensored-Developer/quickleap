@@ -1,13 +1,14 @@
 const randomNumber = require('random-number-csprng');
 const userService = require('../services/user');
 const VerificationCode = require('../models').VerificationCode;
+const config = require('../config');
 
 
 module.exports = class UserVerificationService {
 
     constructor(container) {
         this.userService = container.get(userService);
-        // this.logger = container.get('logger');
+        this.logger = container.get('logger');
     }
 
     async createVerificationCode(user) {

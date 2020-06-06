@@ -47,4 +47,11 @@ module.exports = app => {
     eah(authController.changePassword)
   );
 
+  router.post(
+    '/send_code',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    eah(authController.initiateVerification)
+  );
+
 };

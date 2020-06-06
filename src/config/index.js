@@ -26,6 +26,8 @@ module.exports = {
     product: 50
   },
 
+  live: process.env.LIVE,
+
   databaseUrl: process.env.DATABASE_URL,
 
   testDatabaseUrl: process.env.TEST_DATABASE_URL,
