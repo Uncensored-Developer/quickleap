@@ -73,7 +73,19 @@ module.exports = app => {
         username: celebrate.Joi.string().required(),
       }),
     }),
-    authController.initiateResetPassword
+    eah(authController.initiateResetPassword)
+  );
+
+  router.post(
+    '/reset_password',
+    celebrate.celebrate({
+      body: celebrate.Joi.object({
+        username: celebrate.Joi.string().required(),
+        code: celebrate.Joi.string().required(),
+        password: celebrate.Joi.string().required(),
+      }),
+    }),
+    authController.resetPassword
   );
 
 };

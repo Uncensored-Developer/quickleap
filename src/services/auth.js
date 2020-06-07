@@ -138,6 +138,25 @@ module.exports = class AuthService {
   }
 
 
+  async resetPassword(user, password) {
+    try {
+
+      this.logger.silly('Hashing password');
+
+      const hashedPassword = await bcrypt.hash(password, 8);
+
+      const data = {
+        password: hashedPassword
+      }
+
+      return await this.userService.update({ username: user.username }, data);
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+
+
   getAccountTypeService(account_type) {
     switch (account_type) {
       case 'farmer':
