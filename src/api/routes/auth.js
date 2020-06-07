@@ -63,7 +63,17 @@ module.exports = app => {
         code: celebrate.Joi.string().required(),
       }),
     }),
-    authController.verifyUser
+    eah(authController.verifyUser)
+  );
+
+  router.post(
+    '/start_reset_password',
+    celebrate.celebrate({
+      body: celebrate.Joi.object({
+        username: celebrate.Joi.string().required(),
+      }),
+    }),
+    authController.initiateResetPassword
   );
 
 };

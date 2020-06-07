@@ -92,4 +92,29 @@ module.exports = class AuthController{
     return util.send(res);
   }
 
+  static async initiateResetPassword(req, res) {
+    const result = await AuthController.userService.getUser(req.body.username)
+
+    if (result) {
+      const verification = await AuthController.userVerificationService.createVerificationCode(result);
+      if (verification) {
+        const data = { code: null };
+        const msg = 'Verification code sent';
+        if (config.live === 'false') {
+          data.code = verification.code;
+        }
+        util.setSuccess(200, msg, data);
+      } else {
+        const msg = 'Something went wrong. Try again later.';
+        util.setError(500, msg);
+
+      }
+    } else {
+      const msg = 'User with this phonenumber/email does not exist.';
+      util.setError(404, msg);
+
+    }
+    return util.send(res);
+  }
+
 };
