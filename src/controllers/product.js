@@ -83,6 +83,7 @@ module.exports = class ProductController {
                     name: product.name,
                     slug: product.slug,
                     uuid: product.uuid,
+                    image: product.image,
                     price: await getMaxMarkedUpProductPrice(product.id, 'grade1')
                 });
             }
