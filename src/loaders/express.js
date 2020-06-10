@@ -5,9 +5,17 @@ const logger       = require('morgan');
 const api          = require('../api');
 const config       = require('../config');
 const cors         = require('cors');
+const Sentry       = require('@sentry/node');
 
 
 module.exports = ({app}) => {
+
+  if (config.sentry.live === 'true') {
+
+    Sentry.init({ dsn: config.sentry.dsn});
+    app.use(Sentry.Handlers.requestHandler());
+
+  }
 
   app.use(logger('dev'));
   app.use(express.json());
@@ -35,6 +43,8 @@ module.exports = ({app}) => {
 
   // Load API routes
   app.use(config.api.prefix.v1, api(app));
+
+  if (config.sentry.live === 'true') app.use(Sentry.Handlers.errorHandler());
 
   /// catch 404 and forward to error handler
   app.use((req, res, next) => {

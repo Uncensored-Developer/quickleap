@@ -26,6 +26,11 @@ module.exports = {
     product: 50
   },
 
+  sentry: {
+    live: process.env.USE_SENTRY,
+    dsn: process.env.SENTRY_DSN
+  },
+
   live: process.env.LIVE,
 
   databaseUrl: process.env.DATABASE_URL,

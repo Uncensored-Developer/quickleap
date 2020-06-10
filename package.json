@@ -17,6 +17,7 @@
     "test": "export NODE_ENV=test && npm run drop_tables  && npm run migrate_test_db && mocha src/tests/**/**/*.js --timeout 20000 --exit"
   },
   "dependencies": {
+    "@sentry/node": "^5.17.0",
     "africastalking": "^0.4.5",
     "agenda": "^3.0.0",
     "agendash": "^1.0.0",
