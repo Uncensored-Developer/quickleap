@@ -1,7 +1,9 @@
 const uid = require('rand-token').uid;
 const Order = require('../models').Order;
+const Cart = require('../models').Cart;
 const Util = require('../utils/utils');
 const PaymentFactory = require('../utils/payments');
+const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
 
 const util = new Util();
@@ -22,11 +24,23 @@ module.exports = class OrderController {
         const factory = new PaymentFactory()
         const paymentGateway = factory.createPaymentGateway();
 
+        // fetch all items in cart to calculate total amount
+        const items = await Cart.findAll({ where: { UserId: req.user.id } });
+        const totalAmount = async () => {
+            let prices = []
+            for (let item of items) {
+                const price = await getMaxMarkedUpProductPrice(item.ProductId, item.grade);
+                prices.push(price * item.quantity);
+            }
+
+            return prices.reduce((a,b) => a + b, 0)
+        }
+
         // make call to payment gateway to get checkout url
         const paymentData = {
             orderId: order.order_id,
             name: req.user.name,
-            amount: 600,
+            amount: await totalAmount(),
             email: (req.user.username.includes('@')) ? req.user.username : 'default@quickleap.com'
         }
         const response = await paymentGateway.getUrl(paymentData);
