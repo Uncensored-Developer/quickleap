@@ -92,15 +92,20 @@ module.exports = class AuthService {
 
       const accountService = this.getAccountTypeService(userRecord.account_type);
 
-      // get account type details
-      const accountTypeRecord = await accountService.get({ UserId: userRecord.id });
+      let accountTypeRecordId = null
+
+      if (userRecord.account_type !== 'aggregator' && userRecord.account_type !== 'admin'){
+        // get account type details
+        const accountTypeRecord = await accountService.get({ UserId: userRecord.id });
+        accountTypeRecordId = accountTypeRecord.id
+      }
 
       const user = {
         id: userRecord.id,
         username: userRecord.username,
         account_type: userRecord.account_type,
         referral_code: userRecord.referral_code,
-        account_type_id: accountTypeRecord.id,
+        account_type_id: accountTypeRecordId,
         is_verified: userRecord.is_verified,
         name: userRecord.name
       };

@@ -85,7 +85,7 @@ module.exports = app => {
         password: celebrate.Joi.string().required(),
       }),
     }),
-    authController.resetPassword
+    eah(authController.resetPassword)
   );
 
 };

@@ -31,6 +31,17 @@ module.exports = {
     dsn: process.env.SENTRY_DSN
   },
 
+  monnify: {
+    apiKey: process.env.MONNIFY_API_KEY,
+    apiSecret: process.env.MONNIFY_API_SECRET,
+    contractCode: process.env.MONNIFY_CONTRACT_CODE
+  },
+
+  payments: {
+    redirectUrl: 'https://instagrame.com',
+    gateway: process.env.PAYMENT_GATEWAY
+  },
+
   live: process.env.LIVE,
 
   databaseUrl: process.env.DATABASE_URL,
