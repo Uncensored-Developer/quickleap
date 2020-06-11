@@ -36,9 +36,9 @@ module.exports = app => {
         eah(productController.update)
     );
 
-    router.get('/:uuid', productController.get);
+    router.get('/:uuid', eah(productController.get));
 
-    router.get('', productController.fetch);
+    router.get('', eah(productController.fetch));
 
 
 

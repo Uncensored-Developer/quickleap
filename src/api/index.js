@@ -8,6 +8,7 @@ const warehouseRoute = require('./routes/warehouse');
 const productRoute = require('./routes/product');
 const productinfoRoute = require('./routes/productInfo');
 const cartRoute = require('./routes/cart');
+const orderRoute = require('./routes/order');
 
 
 module.exports = () => {
@@ -22,6 +23,7 @@ module.exports = () => {
   productRoute(app);
   productinfoRoute(app);
   cartRoute(app);
+  orderRoute(app);
 
   return app;
 };

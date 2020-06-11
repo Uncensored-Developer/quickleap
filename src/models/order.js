@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     const Order = sequelize.define('Order', {
         region: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         address: {
             type: DataTypes.TEXT,
@@ -14,14 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         paid: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
+            defaultValue: false
         },
-        shipped: {
-            type: DataTypes.BOOLEAN,
+        status: {
+            type: DataTypes.STRING(20),
             allowNull: false,
+            defaultValue: 'ordered'
         },
         order_id: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.STRING(10),
             allowNull: false,
+            unique: true
         },
 
     }, {});
