@@ -95,7 +95,7 @@ module.exports = class ProductController {
             util.setSuccess(200, msg, await getProducts());
         } else {
             const msg = 'No Products found.';
-            util.setSuccess(200, msg);
+            util.setSuccess(200, msg, []);
         }
         return util.send(res);
     }

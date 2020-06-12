@@ -113,7 +113,7 @@ module.exports = class BaseController {
             util.setSuccess(200, msg, results)
         } else {
             const msg = `No ${this.noun}s found.`;
-            util.setSuccess(200, msg);
+            util.setSuccess(200, msg, []);
         }
         return util.send(res);
     }

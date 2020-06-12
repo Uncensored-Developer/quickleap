@@ -51,6 +51,9 @@ module.exports = class OrderController {
             paymentUrl: response.url
         }
 
+        // clear all user cart
+        // if (response.url) Cart.destroy({ where: { UserId: res.user.id } })
+
         const msg = 'Order Created';
         util.setSuccess(201, msg, data);
 

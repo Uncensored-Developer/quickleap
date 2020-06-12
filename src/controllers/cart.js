@@ -87,7 +87,7 @@ module.exports = class CartController {
             util.setSuccess(200, msg, await getItems())
         } else {
             const msg = 'Cart is empty.';
-            util.setSuccess(200, msg);
+            util.setSuccess(200, msg, []);
         }
         return util.send(res);
     }
