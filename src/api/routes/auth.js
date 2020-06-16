@@ -2,6 +2,7 @@ const express = require('express');
 const celebrate = require('celebrate');
 const eah = require('express-async-handler');
 const authController = require('../../controllers/auth');
+const userController = require('../../controllers/user');
 const middlewares = require('../middlewares');
 
 const router = express.Router();
@@ -86,6 +87,13 @@ module.exports = app => {
       }),
     }),
     eah(authController.resetPassword)
+  );
+
+  router.get(
+    '/user',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    eah(userController.getUser)
   );
 
 };

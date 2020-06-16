@@ -9,7 +9,7 @@ const config = require('../config');
 const util = new Util();
 
 
-module.exports = class AuthController{
+module.exports = class AuthController {
 
   static get authService() { return typedi.Container.get(authService); }
   static get userService() { return typedi.Container.get(userService); }
