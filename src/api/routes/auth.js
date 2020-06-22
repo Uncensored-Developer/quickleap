@@ -19,6 +19,7 @@ module.exports = app => {
           'aggregator', 'farmer', 'warehouse', 'trader', 'inputs', 'trucker',
           'business'
         ).required(),
+        referral_code: celebrate.Joi.string(),
         password: celebrate.Joi.string().min(6).required(),
       }),
     }),

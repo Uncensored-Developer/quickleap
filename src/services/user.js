@@ -18,10 +18,10 @@ module.exports = class UserService {
     }
   }
 
-  async getUser(username) {
+  async getUser(query) {
     try {
       return await db.User.findOne({
-        where: {username: username}
+        where: query
       });
     } catch (e) {
       console.log(e);

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 const uid = require('rand-token').uid;
 const typedi = require('typedi');
+const Referral = require('../models').Referral;
 const events = require('../subscribers/events');
 const userService = require('../services/user');
 const farmerService = require('../services/farmer');
@@ -22,7 +23,7 @@ module.exports = class AuthService {
     this.eventEmitter = require('../subscribers/emitter').getInstance();
   }
 
-  async signUp(userInput) {
+  async signUp(userInput, referrer) {
     try {
       const salt = crypto.randomBytes(32);
 
@@ -61,6 +62,10 @@ module.exports = class AuthService {
       // await this.smser.sendValidationCode(userRecord);
       this.eventEmitter.emit(events.user.signUp, userRecord);
 
+      if (referrer) {
+        await this.handleReferral(userRecord.id, referrer.id);
+      }
+
       const user = {
         id: userRecord.id,
         username: userRecord.username,
@@ -80,7 +85,7 @@ module.exports = class AuthService {
   async signIn(userInput) {
 
     try {
-      const userRecord = await this.userService.getUser(userInput.username);
+      const userRecord = await this.userService.getUser({username: userInput.username});
       if (!userRecord) { return null;}
 
       const passwordIsValid = await bcrypt.compare(userInput.password, userRecord.password);
@@ -121,7 +126,7 @@ module.exports = class AuthService {
 
   async changePassword(user, userInput) {
     try {
-      const userRecord = await this.userService.getUser(user.username);
+      const userRecord = await this.userService.getUser({username: user.username});
       if (!userRecord) { return null; }
 
       const passwordIsValid = await bcrypt.compare(userInput.old_password, userRecord.password);
@@ -178,6 +183,13 @@ module.exports = class AuthService {
       default:
         return null;
     }
+  }
+
+  async handleReferral(userId, referrerId) {
+    return await Referral.create({
+      UserId: userId,
+      aggregator: referrerId
+    });
   }
 
   generateToken(user) {

@@ -16,9 +16,18 @@ module.exports = class AuthController {
   static get userVerificationService() { return typedi.Container.get(userVerificationService); }
 
   static async register(req, res) {
-    const user = await AuthController.userService.getUser(req.body.username);
+    const user = await AuthController.userService.getUser({username: req.body.username});
+    let referrer = null
+    if (req.body.referral_code) {
+      referrer = await AuthController.userService.getUser({ referral_code: req.body.referral_code.toUpperCase() });
+      if (!referrer) {
+        const msg = 'Invalid Refferal Code (Ref Code note found).';
+        util.setError(404, msg);
+        return util.send(res);
+      }
+    }
     if (!user) {
-      const result = await AuthController.authService.signUp(req.body);
+      const result = await AuthController.authService.signUp(req.body, referrer);
       const msg = 'User Registered.';
       util.setSuccess(201, msg, result);
     } else {
