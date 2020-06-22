@@ -96,4 +96,19 @@ module.exports = app => {
     eah(userController.getUser)
   );
 
+  router.put(
+    '/user',
+    middlewares.isAuth,
+    middlewares.attachCurrentUser,
+    celebrate.celebrate({
+      body: celebrate.Joi.object({
+        name: celebrate.Joi.string(),
+        dob: celebrate.Joi.date(),
+        photo: celebrate.Joi.string(),
+        address: celebrate.Joi.string(),
+      }),
+    }),
+    eah(userController.updateUser)
+  );
+
 };

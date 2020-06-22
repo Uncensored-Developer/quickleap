@@ -25,4 +25,25 @@ module.exports = class UserController {
 
     }
 
+    static async updateUser(req, res) {
+
+        const user = await User.update(
+            req.body, 
+            { 
+                where: { id: req.user.id } 
+            }
+        );
+
+        if (!user) {
+            const msg = 'Something went wrong try again later';
+            util.setError(500, msg);
+        } else {
+            const msg = 'User details updated'
+            util.setSuccess(200, msg, req.body);
+        }
+
+        return util.send(res);
+
+    }
+
 }

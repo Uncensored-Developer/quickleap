@@ -61,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.Cart);
     User.hasOne(models.Order);
     User.hasOne(models.VerificationCode);
+    User.hasOne(models.Business);
   };
   return User;
 };
