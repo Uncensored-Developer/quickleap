@@ -10,6 +10,7 @@ const farmerService = require('../services/farmer');
 const traderService = require('../services/trader');
 const truckerService = require('../services/trucker');
 const warehouseService = require('../services/warehouse');
+const businessService = require('../services/business');
 
 
 module.exports = class AuthService {
@@ -172,6 +173,8 @@ module.exports = class AuthService {
         return typedi.Container.get(truckerService);
       case 'warehouse':
         return typedi.Container.get(warehouseService);
+      case 'business':
+        return typedi.Container.get(businessService);
       default:
         return null;
     }
