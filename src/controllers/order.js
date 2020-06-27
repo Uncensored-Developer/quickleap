@@ -91,4 +91,38 @@ module.exports = class OrderController {
 
     }
 
+    static async get(req, res) {
+
+        const {orderId} = req.params;
+
+        const order = await Order.findOne({ where: { order_id: orderId } });
+
+        let msg = 'Order Found.';
+
+        if (order) {
+            const data = {
+                region: order.region,
+                address: order.address,
+                paid: order.paid,
+                status: order.status,
+                order_id: order.order_id,
+                UserId: order.UserId,
+                createdAt: order.createdAt,
+                items: []
+            }
+            util.setSuccess(200, msg, data);
+            if (req.user.account_type !== 'admin' && order.UserId !== req.user.id) {
+                msg = 'You are not authorized to view this order.';
+                util.setError(403, msg);
+            }
+        } else {
+            msg = 'Order not found.';
+            util.setError(404, msg);
+        }
+
+        return util.send(res);
+
+
+    }
+
 }

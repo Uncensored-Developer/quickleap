@@ -26,7 +26,14 @@ module.exports = app => {
         '',
         middlewares.isAuth,
         middlewares.attachCurrentUser,
-        orderController.fetch
+        eah(orderController.fetch)
+    );
+
+    router.get(
+        '/:orderId',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        eah(orderController.get)
     );
 
     
