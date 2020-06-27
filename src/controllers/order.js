@@ -65,26 +65,24 @@ module.exports = class OrderController {
 
         const {offset, limit} = helpers.getParams(req);
 
+        const params = {
+            offset,
+            limit,
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            attributes: {
+                exclude: ['id',]
+            }
+        }
+
         let orders = null
 
-        if (req.user.account_type === 'admin') {
-            orders = await Order.findAll({
-                offset,
-                limit,
-                order: [
-                    ['createdAt', 'DESC']
-                ]
-            });
-        } else {
-            orders = await Order.findAll({
-                offset,
-                limit,
-                order: [
-                    ['createdAt', 'DESC']
-                ],
-                where: { UserId: req.user.id }
-            });
+        if (req.user.account_type !== 'admin') {
+            params.where = { UserId: req.user.id };
         }
+
+        orders = await Order.findAll(params);
 
         const msg = 'Orders Found';
         util.setSuccess(200, msg, orders);
