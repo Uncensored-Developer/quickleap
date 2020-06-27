@@ -23,8 +23,7 @@ module.exports = class OrderController {
         const order = await Order.create(order_data);
 
         // get payment gateway class from factory
-        const factory = new PaymentFactory()
-        const paymentGateway = factory.createPaymentGateway();
+        const paymentGateway = PaymentFactory.createPaymentGateway();
 
         // fetch all items in cart to calculate total amount
         const items = await Cart.findAll({ where: { UserId: req.user.id } });
