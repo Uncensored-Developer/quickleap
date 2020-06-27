@@ -15,7 +15,8 @@ module.exports = class OrderController {
     static async create (req, res) {
         const order_data = {
             address: req.body.address,
-            order_id: `GL${uid(8).toUpperCase()}`
+            order_id: `GL${uid(8).toUpperCase()}`,
+            UserId: req.user.id
         }
 
         // save order
