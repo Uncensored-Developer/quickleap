@@ -19,8 +19,15 @@ module.exports = app => {
                 address: celebrate.Joi.string().required(),
             }),
         }),
-        orderController.create
-    )
+        eah(orderController.create)
+    );
+
+    router.get(
+        '',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        orderController.fetch
+    );
 
     
 

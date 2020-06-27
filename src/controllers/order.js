@@ -2,6 +2,7 @@ const uid = require('rand-token').uid;
 const Order = require('../models').Order;
 const Cart = require('../models').Cart;
 const Util = require('../utils/utils');
+const helpers = require('../utils/helpers');
 const PaymentFactory = require('../utils/payments');
 const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
@@ -58,6 +59,38 @@ module.exports = class OrderController {
         util.setSuccess(201, msg, data);
 
         return util.send(res);
+    }
+
+    static async fetch(req, res) {
+
+        const {offset, limit} = helpers.getParams(req);
+
+        let orders = null
+
+        if (req.user.account_type === 'admin') {
+            orders = await Order.findAll({
+                offset,
+                limit,
+                order: [
+                    ['createdAt', 'DESC']
+                ]
+            });
+        } else {
+            orders = await Order.findAll({
+                offset,
+                limit,
+                order: [
+                    ['createdAt', 'DESC']
+                ],
+                where: { UserId: req.user.id }
+            });
+        }
+
+        const msg = 'Orders Found';
+        util.setSuccess(200, msg, orders);
+
+        return util.send(res);
+
     }
 
 }

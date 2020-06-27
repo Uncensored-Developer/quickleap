@@ -36,6 +36,7 @@ module.exports = class ProductController {
                 uuid: uid(10).toLowerCase()
             };
             product = await ProductController.productService.create(data);
+            // data.type = product.type;
             data.createdAt = product.createdAt;
             const msg = 'Product Created.';
             util.setSuccess(201, msg, data);

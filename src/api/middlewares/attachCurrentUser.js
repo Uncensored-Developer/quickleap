@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
     const Logger = typedi.Container.get('logger');
     const userServiceInstance = typedi.Container.get(userService);
     try {
-        const user = await userServiceInstance.getUser(req.token.username);
+        const user = await userServiceInstance.getUser({username: req.token.username});
         if (!user) {
             return res.sendStatus(404);
         }

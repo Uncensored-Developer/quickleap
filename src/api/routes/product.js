@@ -24,7 +24,7 @@ module.exports = app => {
         middlewares.attachCurrentUser,
         middlewares.isAggregatorOrAdmin,
         celebrateValidation,
-        eah(productController.create)
+        productController.create
     )
 
     router.put(
