@@ -10,6 +10,7 @@ const productinfoRoute = require('./routes/productInfo');
 const cartRoute = require('./routes/cart');
 const orderRoute = require('./routes/order');
 const businessRoute = require('./routes/business');
+const webhookRoute = require('./routes/webhook');
 
 
 module.exports = () => {
@@ -26,6 +27,7 @@ module.exports = () => {
   cartRoute(app);
   orderRoute(app);
   businessRoute(app);
+  webhookRoute(app);
 
   return app;
 };

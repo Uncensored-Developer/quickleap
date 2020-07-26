@@ -38,9 +38,25 @@ module.exports = class MonnifyPayment extends AbstractBasePayment {
                 body: JSON.stringify(data),
                 headers: this._headers
             });
-            const json = await response.json()
+            const json = await response.json();
             if (json.requestSuccessful) return { url: json.responseBody.checkoutUrl }
             return { url: null }
+        } catch (e) {
+            this.logger.error(e.response);
+            throw e;
+        }
+    }
+
+    async getTransaction(obj) {
+        // paymentRef is the order id
+        const url = `${this._baseUrl}/api/v1/merchant/transactions/query?paymentReference=${obj.paymentRef}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: this._headers
+            });
+            return await response.json();
         } catch (e) {
             this.logger.error(e.response);
             throw e;

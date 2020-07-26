@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
 
     }, {});
     // eslint-disable-next-line no-unused-vars

@@ -13,15 +13,6 @@ const util = new Util();
 module.exports = class OrderController {
 
     static async create (req, res) {
-        const order_data = {
-            address: req.body.address,
-            order_id: `GL${uid(8).toUpperCase()}`,
-            UserId: req.user.id
-        }
-
-        // save order
-        const order = await Order.create(order_data);
-
         // get payment gateway class from factory
         const paymentGateway = PaymentFactory.createPaymentGateway();
 
@@ -37,11 +28,21 @@ module.exports = class OrderController {
             return prices.reduce((a,b) => a + b, 0)
         }
 
+        const order_data = {
+            address: req.body.address,
+            order_id: `QL${uid(8).toUpperCase()}`,
+            UserId: req.user.id,
+            amount: await totalAmount()
+        }
+
+        // save order
+        const order = await Order.create(order_data);
+
         // make call to payment gateway to get checkout url
         const paymentData = {
             orderId: order.order_id,
             name: req.user.name,
-            amount: await totalAmount(),
+            amount: order.amount,
             email: (req.user.username.includes('@')) ? req.user.username : 'default@quickleap.com'
         }
         const response = await paymentGateway.getUrl(paymentData);
@@ -49,6 +50,7 @@ module.exports = class OrderController {
         const data = {
             order_id: order.order_id,
             status: order.status,
+            amount: order.amount,
             paymentUrl: response.url
         }
 
