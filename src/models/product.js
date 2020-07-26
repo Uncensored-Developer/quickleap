@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         // associations can be defined here
         Product.hasOne(models.ProductInfo);
         Product.hasOne(models.Cart);
+        Product.hasOne(models.OrderItem);
     };
     return Product;
 };

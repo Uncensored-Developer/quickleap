@@ -5,11 +5,13 @@ module.exports = (sequelize, DataTypes) => {
     const OrderItem = sequelize.define('OrderItem', {
         price: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+            defaultValue: 0,
         },
         real_price: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+            defaultValue: 0,
         },
         quantity: {
             type: DataTypes.INTEGER,

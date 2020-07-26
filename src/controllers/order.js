@@ -1,5 +1,6 @@
 const uid = require('rand-token').uid;
 const Order = require('../models').Order;
+const OrderItem = require('../models').OrderItem;
 const Cart = require('../models').Cart;
 const Util = require('../utils/utils');
 const helpers = require('../utils/helpers');
@@ -18,25 +19,44 @@ module.exports = class OrderController {
 
         // fetch all items in cart to calculate total amount
         const items = await Cart.findAll({ where: { UserId: req.user.id } });
-        const totalAmount = async () => {
-            let prices = []
+        const total = async () => {
+            let prices = [];
+            let orderItems = [];
             for (let item of items) {
                 const price = await getMaxMarkedUpProductPrice(item.ProductId, item.grade);
                 prices.push(price * item.quantity);
+                orderItems.push({
+                    price,
+                    ProductId: item.ProductId,
+                    quantity: item.quantity,
+                    real_price: item.price
+                });
             }
 
-            return prices.reduce((a,b) => a + b, 0)
+            return {
+                orderItems,
+                amount: prices.reduce((a, b) => a + b, 0)
+            }
         }
+
+        const calcTotal = await total();
 
         const order_data = {
             address: req.body.address,
             order_id: `QL${uid(8).toUpperCase()}`,
             UserId: req.user.id,
-            amount: await totalAmount()
+            amount: calcTotal.amount
         }
 
         // save order
         const order = await Order.create(order_data);
+
+        // save items to OrderItem
+        const orderItems = calcTotal.orderItems;
+        for (let item of orderItems) {
+            item.OrderId = order.id
+        }
+        OrderItem.bulkCreate(orderItems);
 
         // make call to payment gateway to get checkout url
         const paymentData = {
@@ -117,6 +137,34 @@ module.exports = class OrderController {
                 msg = 'You are not authorized to view this order.';
                 util.setError(403, msg);
             }
+        } else {
+            msg = 'Order not found.';
+            util.setError(404, msg);
+        }
+
+        return util.send(res);
+
+
+    }
+
+    static async update(req, res) {
+
+        const { orderId } = req.params;
+
+        const order = await Order.findOne({ where: { order_id: orderId } });
+
+        let msg = 'Order Found.';
+
+        if (order) {
+            const data = {
+                status: req.body.status
+            };
+            Order.update(
+                data,
+                {where: {order_id: orderId}}
+            );
+            msg = 'Order status updated';
+            util.setSuccess(200, msg, data);
         } else {
             msg = 'Order not found.';
             util.setError(404, msg);

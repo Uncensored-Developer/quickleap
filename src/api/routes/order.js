@@ -22,6 +22,19 @@ module.exports = app => {
         eah(orderController.create)
     );
 
+    router.put(
+        '/:orderId',
+        middlewares.isAuth,
+        middlewares.attachCurrentUser,
+        middlewares.isAggregatorOrAdmin,
+        celebrate.celebrate({
+            body: celebrate.Joi.object({
+                status: celebrate.Joi.string().valid('ordered', 'process', 'shipped').required(),
+            }),
+        }),
+        eah(orderController.update)
+    );
+
     router.get(
         '',
         middlewares.isAuth,
