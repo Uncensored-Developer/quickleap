@@ -4,6 +4,7 @@ const slugify = require('slugify');
 const Util = require('../utils/utils');
 const productService = require('../services/product');
 const productInfoService = require('../services/productInfo');
+const ProductImage = require('../models').ProductImage;
 const BaseController = require('./base');
 const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
@@ -36,6 +37,26 @@ module.exports = class ProductController {
                 uuid: uid(10).toLowerCase()
             };
             product = await ProductController.productService.create(data);
+            // add images to ProductImage table
+            const maxImages = 3;
+            const images = [];
+            for (let img of req.body.otherImages) {
+                images.push(
+                    {
+                        ProductId: product.id,
+                        image: img
+                    }
+                );
+            }
+            // create the required empty image slot for this product
+            const emptyImageSlots = maxImages - req.body.otherImages.length;
+            for (let i = 0; i < emptyImageSlots; i++) {
+                images.push({ProductId: product.id});
+                
+            }
+
+            ProductImage.bulkCreate(images);
+            
             // data.type = product.type;
             data.createdAt = product.createdAt;
             const msg = 'Product Created.';

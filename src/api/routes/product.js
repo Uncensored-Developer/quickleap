@@ -12,6 +12,7 @@ const celebrateValidation = celebrate.celebrate({
         name: celebrate.Joi.string().required(),
         description: celebrate.Joi.string().required(),
         image: celebrate.Joi.string().required(),
+        otherImages: celebrate.Joi.array().max(3),
     }),
 });
 
