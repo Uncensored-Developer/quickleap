@@ -6,6 +6,7 @@ const productService = require('../services/product');
 const productInfoService = require('../services/productInfo');
 const ProductImage = require('../models').ProductImage;
 const BaseController = require('./base');
+const productImage = require('../models/productImage');
 const getMaxMarkedUpProductPrice = require('../utils/helpers').getMaxMarkedUpProductPrice;
 
 
@@ -129,6 +130,14 @@ module.exports = class ProductController {
             const msg = `Product not found.`;
             util.setError(404, msg);
         } else {
+
+            const images = await ProductImage.findAll(
+                {
+                    where: {ProductId: product.id},
+                    attributes: {exclude: ['createdAt', 'updatedAt', 'ProductId']}
+                }
+                );
+
             const msg = `Product found.`;
             
             const data = {
@@ -139,7 +148,8 @@ module.exports = class ProductController {
                 classification: product.classification,
                 uuid: product.uuid,
                 createdAt: product.createdAt,
-                prices: await getMaxMarkedUpProductPrice(product.id)
+                prices: await getMaxMarkedUpProductPrice(product.id),
+                otherImages: images
             };
             util.setSuccess(200, msg, data)
         }
