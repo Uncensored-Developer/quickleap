@@ -122,6 +122,12 @@ module.exports = class OrderController {
         let msg = 'Order Found.';
 
         if (order) {
+            const items = await OrderItem.findAll(
+                    { 
+                        where: { OrderId: order.id },
+                        attributes: { exclude: ['id', 'real_price'] }
+                    }
+                );
             const data = {
                 region: order.region,
                 address: order.address,
@@ -130,7 +136,7 @@ module.exports = class OrderController {
                 order_id: order.order_id,
                 UserId: order.UserId,
                 createdAt: order.createdAt,
-                items: []
+                items
             }
             util.setSuccess(200, msg, data);
             if (req.user.account_type !== 'admin' && order.UserId !== req.user.id) {
